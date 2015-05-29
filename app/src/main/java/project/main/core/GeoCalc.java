@@ -13,10 +13,10 @@ public class GeoCalc
     /*
         Calculating the distance between two geographical points
 
-        A fórmula utilizada para determinar a distância mais curta entre dois pontos no terreno (geodésicas),
-        se aproxima do geóide para uma esfera de raio R = 6.372,795477598 km (média quádrica raio),
-        para o cálculo poderia ter uma distância de erro de 0,3%, especialmente nos extremos polares,
-        e por longas distâncias através de vários programas paralelos. Dado dois pontos A e B na esfera expressa pela latitude (lat) e longitude (lon), você terá:
+        The formula to determinate the shortest distance between two geographical points is close to an esphere of radius
+        R = 6.372,795477598 km (the quadratic average of the earth).
+        For some combinations this distance could have an error of 0,3% more or less, regarding the extreme poles
+        and long distances through parallel programs. Having two points A and B in an sphere of latitude (lat) and longitude (lon), we will have:
 
         distance (A, B) = R * arccos (sin (lata) * sin (latB) + cos (lata) * cos (latB) * cos (Lona-lonB))
         All angles are in radians and to convert that to degree we need to multiply it by PI and then divide it by 180.
