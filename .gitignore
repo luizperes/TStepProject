@@ -10,3 +10,5 @@ build/intermediates/model_data.bin
 gradlew.bat
 
 local.properties
+
+app/proguard-rules.pro
