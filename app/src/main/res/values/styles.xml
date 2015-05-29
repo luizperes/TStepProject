@@ -1,0 +1,33 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Theme.Steptaneous" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="android:actionBarTabStyle">@style/ActionBarTabs.Steptaneous</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabs.Steptaneous</item>
+
+        <item name="android:colorBackground">@color/step_dark_red</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+        <!-- Support library compatibility -->
+        <item name="colorPrimaryDark">@color/step_dark_red</item>
+        <item name="colorPrimary">@color/step_light_red</item>
+
+        <!-- old
+        <item name="android:actionBarDivider">@drawable/tab_divider</item>
+        -->
+        <item name="android:actionBarDivider">@android:color/transparent</item>
+        <item name="actionBarDivider">@android:color/transparent</item>
+    </style>
+
+    <!-- ActionBar tabs styles -->
+    <style name="ActionBarTabs.Steptaneous" parent="@style/Widget.AppCompat.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_bar_background</item>
+
+
+        <!-- Support library compatibility -->
+        <item name="background">@drawable/tab_bar_background</item>
+
+    </style>
+</resources>

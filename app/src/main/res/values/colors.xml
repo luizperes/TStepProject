@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="step_dark_red">#990205</color>
+    <color name="step_light_red">#DB0408</color>
+    <color name="step_green">#97C93C</color>
+
+</resources>

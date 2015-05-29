@@ -1,0 +1,12 @@
+
+*.iml
+
+build/intermediates/dex-cache/cache.xml
+
+build/intermediates/gradle_project_sync_data.bin
+
+build/intermediates/model_data.bin
+
+gradlew.bat
+
+local.properties
