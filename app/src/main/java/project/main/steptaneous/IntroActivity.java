@@ -9,6 +9,7 @@
 
 package project.main.steptaneous;
 
+import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
 import android.app.Activity;
 import android.content.Intent;
@@ -58,13 +59,11 @@ public class IntroActivity extends Activity
     {
         icons = new int[]
         {
-                R.drawable.intro_find_friends,
-                R.drawable.intro_secure,
-                R.drawable.intro_secure,
-                R.drawable.intro_secure,
-                R.drawable.intro_secure,
-                R.drawable.intro_secure,
-                R.drawable.intro_secure
+                R.mipmap.intro_stepss,
+                R.mipmap.intro_find_friends,
+                R.mipmap.intro_telegram,
+                R.mipmap.intro_private,
+                R.mipmap.intro_fast
         };
 
         titles = new int[]
@@ -73,9 +72,7 @@ public class IntroActivity extends Activity
                 R.string.Page2Title,
                 R.string.Page3Title,
                 R.string.Page4Title,
-                R.string.Page5Title,
-                R.string.Page6Title,
-                R.string.Page7Title
+                R.string.Page5Title
         };
 
         messages = new int[]
@@ -84,14 +81,12 @@ public class IntroActivity extends Activity
                 R.string.Page2Message,
                 R.string.Page3Message,
                 R.string.Page4Message,
-                R.string.Page5Message,
-                R.string.Page6Message,
-                R.string.Page7Message
+                R.string.Page5Message
         };
 
         viewPager = (ViewPager)findViewById(R.id.intro_view_pager);
         TextView startMessagingButton = (TextView) findViewById(R.id.start_stepss);
-        startMessagingButton.setText(this.getString(R.string.start_stepss)/*LocaleController.getString("StartStepss", R.string.StartStepss).toUpperCase()*/);
+        startMessagingButton.setText(getString(R.string.start_stepss).toUpperCase());//LocaleController.getString("start_stepss", R.string.start_stepss).toUpperCase());
         if (Build.VERSION.SDK_INT >= 21) {
             StateListAnimator animator = new StateListAnimator();
             //animator.addState(new int[] {android.R.attr.state_pressed}, ObjectAnimator.ofFloat(startMessagingButton, "translationZ", AndroidUtilities.dp(2), AndroidUtilities.dp(4)).setDuration(200));
@@ -218,7 +213,7 @@ public class IntroActivity extends Activity
     private class IntroAdapter extends PagerAdapter {
         @Override
         public int getCount() {
-            return 7;
+            return 5;
         }
 
         @Override
@@ -229,7 +224,7 @@ public class IntroActivity extends Activity
             container.addView(view, 0);
 
             headerTextView.setText(getString(titles[position]));
-            messageTextView.setText(container.getContext().getString(messages[position]));/*/AndroidUtilities.replaceTags(getString(messages[position])));*/
+            messageTextView.setText(getString(messages[position]));//AndroidUtilities.replaceTags(getString(messages[position])));
 
             return view;
         }

@@ -20,7 +20,7 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:id="@+id/icon_image1"
-                android:src="@drawable/intro_find_friends"/>
+                android:src="@mipmap/intro_stepss"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="336dp"
-            android:background="@drawable/btn_intro_skin"
+            android:background="@mipmap/square_background"
             android:layout_gravity="center_horizontal"
             android:textSize="16dp"
             android:textColor="#ffffff"
@@ -86,19 +86,7 @@
                 android:layout_width="5dp"
                 android:layout_height="5dp"
                 android:background="#bbbbbb"
-                android:layout_marginLeft="7dp"/>
-
-            <FrameLayout
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:background="#bbbbbb"
-                android:layout_marginLeft="7dp"/>
-
-            <FrameLayout
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:background="#bbbbbb"
-                android:layout_marginLeft="7dp"/>
+                android:layout_marginLeft="7dp"></FrameLayout>
 
         </LinearLayout>
 
