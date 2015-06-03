@@ -9,3 +9,15 @@ gradle.properties
 gradlew.bat
 local.properties
 app/proguard-rules.pro
+
+app/src/main/intro_fast-web.png
+
+app/src/main/intro_find_friends-web.png
+
+app/src/main/intro_private-web.png
+
+app/src/main/intro_stepss-web.png
+
+app/src/main/intro_telegram-web.png
+
+app/src/main/square_background-web.png
