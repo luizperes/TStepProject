@@ -60,10 +60,16 @@ public class IntroActivity extends Activity
         icons = new int[]
         {
                 R.mipmap.intro_stepss,
+                R.mipmap.intro_stepss,
+                R.mipmap.intro_stepss,
+                R.mipmap.intro_stepss,
+                R.mipmap.intro_stepss
+
+                /*R.mipmap.intro_stepss,
                 R.mipmap.intro_find_friends,
                 R.mipmap.intro_telegram,
                 R.mipmap.intro_private,
-                R.mipmap.intro_fast
+                R.mipmap.intro_fast*/
         };
 
         titles = new int[]
