@@ -39,12 +39,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent i = new Intent(this, IntroActivity.class);
-        startActivity(i);
-        super.onCreate(savedInstanceState);
-        finish();
+        Intent theIntent = getIntent();
+        if (theIntent != null && !theIntent.getBooleanExtra("fromIntro", false))
+        {
+            Intent i = new Intent(this, IntroActivity.class);
+            startActivity(i);
+            super.onCreate(savedInstanceState);
+            finish();
+            return;
+        }
 
-        //setElementsActivity();
+
+        super.onCreate(savedInstanceState);
+        setElementsActivity();
     }
 
     private void setElementsActivity() {
