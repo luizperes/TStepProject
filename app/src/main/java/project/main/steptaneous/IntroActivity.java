@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -27,6 +28,8 @@ import android.widget.ImageView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.view.View;
+
+import org.telegram.android.AndroidUtilities;
 
 
 public class IntroActivity extends Activity
@@ -96,7 +99,8 @@ public class IntroActivity extends Activity
         if (Build.VERSION.SDK_INT >= 21) {
             StateListAnimator animator = new StateListAnimator();
             //animator.addState(new int[] {android.R.attr.state_pressed}, ObjectAnimator.ofFloat(startMessagingButton, "translationZ", AndroidUtilities.dp(2), AndroidUtilities.dp(4)).setDuration(200));
-            //animator.addState(new int[] {}, ObjectAnimator.ofFloat(startMessagingButton, "translationZ", AndroidUtilities.dp(4), AndroidUtilities.dp(2)).setDuration(200));
+            DisplayMetrics dpMetrics = getResources().getDisplayMetrics();
+            animator.addState(new int[] {}, ObjectAnimator.ofFloat(startMessagingButton, "translationZ", AndroidUtilities.dp(dpMetrics, 4), AndroidUtilities.dp(dpMetrics, 2)).setDuration(200));
             startMessagingButton.setStateListAnimator(animator);
         }
         topImage1 = (ImageView)findViewById(R.id.icon_image1);
@@ -230,7 +234,7 @@ public class IntroActivity extends Activity
             container.addView(view, 0);
 
             headerTextView.setText(getString(titles[position]));
-            messageTextView.setText(getString(messages[position]));//AndroidUtilities.replaceTags(getString(messages[position])));
+            messageTextView.setText(AndroidUtilities.replaceTags(getApplicationContext(), getAssets(), getString(messages[position])));
 
             return view;
         }
