@@ -1,3 +1,12 @@
+/*
+     * Part of this source code is of Telegram for Android v. 1.3.2, Copyright Nikolai Kudashov, 2013.
+     * and this source code itself belongs to Stepss for Android v. 1.0
+     * It is licensed under GNU GPL v. 2 or later.
+     * You should have received a copy of the license in this archive (see LICENSE).
+     *
+     * Copyright Luiz Peres, 2015.
+     */
+
 package project.main.steptaneous;
 
 import java.util.Locale;

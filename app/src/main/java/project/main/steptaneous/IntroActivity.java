@@ -251,9 +251,9 @@ public class IntroActivity extends Activity
             for (int a = 0; a < count; a++) {
                 View child = bottomPages.getChildAt(a);
                 if (a == position) {
-                    child.setBackgroundColor(0xffdd2c2c);
+                    child.setBackgroundColor(getResources().getColor(R.color.step_red_pager_view));
                 } else {
-                    child.setBackgroundColor(0xffbbbbbb);
+                    child.setBackgroundColor(getResources().getColor(R.color.step_grey));
                 }
             }
         }
