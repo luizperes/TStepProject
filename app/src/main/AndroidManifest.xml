@@ -20,6 +20,12 @@
             android:name=".IntroActivity"
             android:label="@string/title_activity_intro" >
         </activity>
+
+        <receiver android:name="org.telegram.android.SmsListener">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

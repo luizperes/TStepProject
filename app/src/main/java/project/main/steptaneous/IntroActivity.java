@@ -63,16 +63,10 @@ public class IntroActivity extends Activity
         icons = new int[]
         {
                 R.mipmap.intro_stepss,
-                R.mipmap.intro_stepss,
-                R.mipmap.intro_stepss,
-                R.mipmap.intro_stepss,
-                R.mipmap.intro_stepss
-
-                /*R.mipmap.intro_stepss,
                 R.mipmap.intro_find_friends,
                 R.mipmap.intro_telegram,
                 R.mipmap.intro_private,
-                R.mipmap.intro_fast*/
+                R.mipmap.intro_fast
         };
 
         titles = new int[]
@@ -95,10 +89,9 @@ public class IntroActivity extends Activity
 
         viewPager = (ViewPager)findViewById(R.id.intro_view_pager);
         TextView startMessagingButton = (TextView) findViewById(R.id.start_stepss);
-        startMessagingButton.setText(getString(R.string.start_stepss).toUpperCase());//LocaleController.getString("start_stepss", R.string.start_stepss).toUpperCase());
+        startMessagingButton.setText(getString(R.string.start_stepss).toUpperCase());
         if (Build.VERSION.SDK_INT >= 21) {
             StateListAnimator animator = new StateListAnimator();
-            //animator.addState(new int[] {android.R.attr.state_pressed}, ObjectAnimator.ofFloat(startMessagingButton, "translationZ", AndroidUtilities.dp(2), AndroidUtilities.dp(4)).setDuration(200));
             DisplayMetrics dpMetrics = getResources().getDisplayMetrics();
             animator.addState(new int[] {}, ObjectAnimator.ofFloat(startMessagingButton, "translationZ", AndroidUtilities.dp(dpMetrics, 4), AndroidUtilities.dp(dpMetrics, 2)).setDuration(200));
             startMessagingButton.setStateListAnimator(animator);
@@ -207,13 +200,8 @@ public class IntroActivity extends Activity
     protected void onResume() {
         super.onResume();
         if (justCreated) {
-            /*if (LocaleController.isRTL) {
-                viewPager.setCurrentItem(6);
-                lastPage = 6;
-            } else {*/
                 viewPager.setCurrentItem(0);
                 lastPage = 0;
-            //}
             justCreated = false;
         }
         //Utilities.checkForCrashes(this);

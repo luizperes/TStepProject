@@ -27,6 +27,26 @@ import java.util.Hashtable;
 public class AndroidUtilities
 {
     private static final Hashtable<String, Typeface> typefaceCache = new Hashtable<>();
+    private static boolean waitingForSms = false;
+    private static final Object smsLock = new Object();
+
+    public static boolean isWaitingForSms()
+    {
+        boolean value = false;
+        synchronized (smsLock)
+        {
+            value = waitingForSms;
+        }
+        return value;
+    }
+
+    public static void setWaitingForSms(boolean value)
+    {
+        synchronized (smsLock)
+        {
+            waitingForSms = value;
+        }
+    }
 
     public static int dp(DisplayMetrics theMetrics, float value)
     {
