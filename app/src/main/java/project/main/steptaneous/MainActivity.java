@@ -49,13 +49,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent theIntent = getIntent();
-        if (theIntent != null && !theIntent.getBooleanExtra("fromIntro", false))
+
+        if (!UserConfig.isClientActivated())
         {
-            Intent i = new Intent(this, IntroActivity.class);
-            startActivity(i);
-            super.onCreate(savedInstanceState);
-            finish();
-            return;
+            if (theIntent != null && !theIntent.getBooleanExtra("fromIntro", false)) {
+                Intent i = new Intent(this, IntroActivity.class);
+                startActivity(i);
+                super.onCreate(savedInstanceState);
+                finish();
+                return;
+            }
+
+            // TODO: put the LoginActivity in this case
         }
 
 

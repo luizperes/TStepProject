@@ -96,7 +96,7 @@ public class AndroidUtilities
             }
             return spannableStringBuilder;
         } catch (Exception e) {
-            FileLog.e(appCtx, "tmessages", e);
+            FileLog.e("tmessages", e);
         }
 
         return new SpannableStringBuilder(str);
@@ -109,7 +109,7 @@ public class AndroidUtilities
                     Typeface t = Typeface.createFromAsset(appAssets, assetPath);
                     typefaceCache.put(assetPath, t);
                 } catch (Exception e) {
-                    FileLog.e(appCtx, "Typefaces", "Could not get typeface '" + assetPath + "' because " + e.getMessage());
+                    FileLog.e("Typefaces", "Could not get typeface '" + assetPath + "' because " + e.getMessage());
                     return null;
                 }
             }

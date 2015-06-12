@@ -8,7 +8,6 @@
 
 package org.telegram.messenger;
 
-import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -27,26 +26,26 @@ public class FileLog {
     private File currentFile = null;
 
     private static volatile FileLog Instance = null;
-    public static FileLog getInstance(Context appCtx) {
+    public static FileLog getInstance() {
         FileLog localInstance = Instance;
         if (localInstance == null) {
             synchronized (FileLog.class) {
                 localInstance = Instance;
                 if (localInstance == null) {
-                    Instance = localInstance = new FileLog(appCtx);
+                    Instance = localInstance = new FileLog();
                 }
             }
         }
         return localInstance;
     }
 
-    public FileLog(Context appCtx) {
+    public FileLog() {
         if (!BuildVars.DEBUG_VERSION) {
             return;
         }
         dateFormat = FastDateFormat.getInstance("dd_MM_yyyy_HH_mm_ss", Locale.US);
         try {
-            File sdCard = appCtx.getExternalFilesDir(null);
+            File sdCard = ApplicationLoader.applicationContext.getExternalFilesDir(null);
             if (sdCard == null) {
                 return;
             }
@@ -74,19 +73,19 @@ public class FileLog {
         }
     }
 
-    public static void e(final Context appCtx, final String tag, final String message, final Throwable exception) {
+    public static void e(final String tag, final String message, final Throwable exception) {
         if (!BuildVars.DEBUG_VERSION) {
             return;
         }
         Log.e(tag, message, exception);
-        if (getInstance(appCtx).streamWriter != null) {
-            getInstance(appCtx).logQueue.postRunnable(new Runnable() {
+        if (getInstance().streamWriter != null) {
+            getInstance().logQueue.postRunnable(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        getInstance(appCtx).streamWriter.write(getInstance(appCtx).dateFormat.format(System.currentTimeMillis()) + " E/" + tag + "? " + message + "\n");
-                        getInstance(appCtx).streamWriter.write(exception.toString());
-                        getInstance(appCtx).streamWriter.flush();
+                        getInstance().streamWriter.write(getInstance().dateFormat.format(System.currentTimeMillis()) + " E/" + tag + "﹕ " + message + "\n");
+                        getInstance().streamWriter.write(exception.toString());
+                        getInstance().streamWriter.flush();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -95,18 +94,18 @@ public class FileLog {
         }
     }
 
-    public static void e(final Context appCtx, final String tag, final String message) {
+    public static void e(final String tag, final String message) {
         if (!BuildVars.DEBUG_VERSION) {
             return;
         }
         Log.e(tag, message);
-        if (getInstance(appCtx).streamWriter != null) {
-            getInstance(appCtx).logQueue.postRunnable(new Runnable() {
+        if (getInstance().streamWriter != null) {
+            getInstance().logQueue.postRunnable(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        getInstance(appCtx).streamWriter.write(getInstance(appCtx).dateFormat.format(System.currentTimeMillis()) + " E/" + tag + "? " + message + "\n");
-                        getInstance(appCtx).streamWriter.flush();
+                        getInstance().streamWriter.write(getInstance().dateFormat.format(System.currentTimeMillis()) + " E/" + tag + "﹕ " + message + "\n");
+                        getInstance().streamWriter.flush();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -115,22 +114,22 @@ public class FileLog {
         }
     }
 
-    public static void e(final Context appCtx, final String tag, final Throwable e) {
+    public static void e(final String tag, final Throwable e) {
         if (!BuildVars.DEBUG_VERSION) {
             return;
         }
         e.printStackTrace();
-        if (getInstance(appCtx).streamWriter != null) {
-            getInstance(appCtx).logQueue.postRunnable(new Runnable() {
+        if (getInstance().streamWriter != null) {
+            getInstance().logQueue.postRunnable(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        getInstance(appCtx).streamWriter.write(getInstance(appCtx).dateFormat.format(System.currentTimeMillis()) + " E/" + tag + "? " + e + "\n");
+                        getInstance().streamWriter.write(getInstance().dateFormat.format(System.currentTimeMillis()) + " E/" + tag + "﹕ " + e + "\n");
                         StackTraceElement[] stack = e.getStackTrace();
                         for (StackTraceElement el : stack) {
-                            getInstance(appCtx).streamWriter.write(getInstance(appCtx).dateFormat.format(System.currentTimeMillis()) + " E/" + tag + "? " + el + "\n");
+                            getInstance().streamWriter.write(getInstance().dateFormat.format(System.currentTimeMillis()) + " E/" + tag + "﹕ " + el + "\n");
                         }
-                        getInstance(appCtx).streamWriter.flush();
+                        getInstance().streamWriter.flush();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -141,18 +140,18 @@ public class FileLog {
         }
     }
 
-    public static void d(final Context appCtx, final String tag, final String message) {
+    public static void d(final String tag, final String message) {
         if (!BuildVars.DEBUG_VERSION) {
             return;
         }
         Log.d(tag, message);
-        if (getInstance(appCtx).streamWriter != null) {
-            getInstance(appCtx).logQueue.postRunnable(new Runnable() {
+        if (getInstance().streamWriter != null) {
+            getInstance().logQueue.postRunnable(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        getInstance(appCtx).streamWriter.write(getInstance(appCtx).dateFormat.format(System.currentTimeMillis()) + " D/" + tag + "? " + message + "\n");
-                        getInstance(appCtx).streamWriter.flush();
+                        getInstance().streamWriter.write(getInstance().dateFormat.format(System.currentTimeMillis()) + " D/" + tag + "﹕ " + message + "\n");
+                        getInstance().streamWriter.flush();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -161,18 +160,18 @@ public class FileLog {
         }
     }
 
-    public static void w(final Context appCtx, final String tag, final String message) {
+    public static void w(final String tag, final String message) {
         if (!BuildVars.DEBUG_VERSION) {
             return;
         }
         Log.w(tag, message);
-        if (getInstance(appCtx).streamWriter != null) {
-            getInstance(appCtx).logQueue.postRunnable(new Runnable() {
+        if (getInstance().streamWriter != null) {
+            getInstance().logQueue.postRunnable(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        getInstance(appCtx).streamWriter.write(getInstance(appCtx).dateFormat.format(System.currentTimeMillis()) + " W/" + tag + ": " + message + "\n");
-                        getInstance(appCtx).streamWriter.flush();
+                        getInstance().streamWriter.write(getInstance().dateFormat.format(System.currentTimeMillis()) + " W/" + tag + ": " + message + "\n");
+                        getInstance().streamWriter.flush();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -181,13 +180,13 @@ public class FileLog {
         }
     }
 
-    public static void cleanupLogs(Context appCtx) {
+    public static void cleanupLogs() {
         ArrayList<Uri> uris = new ArrayList<>();
-        File sdCard = appCtx.getExternalFilesDir(null);
+        File sdCard = ApplicationLoader.applicationContext.getExternalFilesDir(null);
         File dir = new File (sdCard.getAbsolutePath() + "/logs");
         File[] files = dir.listFiles();
         for (File file : files) {
-            if (getInstance(appCtx).currentFile != null && file.getAbsolutePath().equals(getInstance(appCtx).currentFile.getAbsolutePath())) {
+            if (getInstance().currentFile != null && file.getAbsolutePath().equals(getInstance().currentFile.getAbsolutePath())) {
                 continue;
             }
             file.delete();
