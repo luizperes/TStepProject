@@ -11,24 +11,42 @@ package org.telegram.android;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
 
+import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.FileLog;
 import org.telegram.ui.Components.TypefaceSpan;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import project.main.steptaneous.R;
+
 public class AndroidUtilities
 {
     private static final Hashtable<String, Typeface> typefaceCache = new Hashtable<>();
     private static boolean waitingForSms = false;
     private static final Object smsLock = new Object();
+    private static Integer photoSize = null;
+    public static float density = 1;
+    private static Boolean isTablet = null;
+    public static DisplayMetrics displayMetrics = new DisplayMetrics();
+    public static Point displaySize = new Point();
+
+    static
+    {
+        density = ApplicationLoader.applicationContext.getResources().getDisplayMetrics().density;
+        checkDisplaySize();
+    }
 
     public static boolean isWaitingForSms()
     {
@@ -48,9 +66,9 @@ public class AndroidUtilities
         }
     }
 
-    public static int dp(DisplayMetrics theMetrics, float value)
+    public static int dp(float value)
     {
-        return (int)Math.ceil(theMetrics.density * value);
+        return (int)Math.ceil(density * value);
     }
 
     public static Spannable replaceTags(Context appCtx, AssetManager appAssets, String str)
@@ -118,5 +136,96 @@ public class AndroidUtilities
         }
     }
 
+    public static void runOnUIThread(Runnable runnable) {
+        runOnUIThread(runnable, 0);
+    }
 
+    public static void runOnUIThread(Runnable runnable, long delay) {
+        if (delay == 0) {
+            ApplicationLoader.applicationHandler.post(runnable);
+        } else {
+            ApplicationLoader.applicationHandler.postDelayed(runnable, delay);
+        }
+    }
+
+    public static int getPhotoSize() {
+        if (photoSize == null) {
+            if (Build.VERSION.SDK_INT >= 16) {
+                photoSize = 1280;
+            } else {
+                photoSize = 800;
+            }
+        }
+        return photoSize;
+    }
+
+    public static String formatTTLString(int ttl) {
+        if (ttl < 60) {
+            return LocaleController.formatPluralString("Seconds", ttl);
+        } else if (ttl < 60 * 60) {
+            return LocaleController.formatPluralString("Minutes", ttl / 60);
+        } else if (ttl < 60 * 60 * 24) {
+            return LocaleController.formatPluralString("Hours", ttl / 60 / 60);
+        } else if (ttl < 60 * 60 * 24 * 7) {
+            return LocaleController.formatPluralString("Days", ttl / 60 / 60 / 24);
+        } else {
+            int days = ttl / 60 / 60 / 24;
+            if (ttl % 7 == 0) {
+                return LocaleController.formatPluralString("Weeks", days / 7);
+            } else {
+                return String.format("%s %s", LocaleController.formatPluralString("Weeks", days / 7), LocaleController.formatPluralString("Days", days % 7));
+            }
+        }
+    }
+
+    public static boolean isTablet() {
+        if (isTablet == null) {
+            isTablet = ApplicationLoader.applicationContext.getResources().getBoolean(R.bool.isTablet);
+        }
+        return isTablet;
+    }
+
+    public static boolean isSmallTablet() {
+        float minSide = Math.min(displaySize.x, displaySize.y) / density;
+        return minSide <= 700;
+    }
+
+    public static int getMinTabletSide() {
+        if (!isSmallTablet()) {
+            int smallSide = Math.min(displaySize.x, displaySize.y);
+            int leftSide = smallSide * 35 / 100;
+            if (leftSide < dp(320)) {
+                leftSide = dp(320);
+            }
+            return smallSide - leftSide;
+        } else {
+            int smallSide = Math.min(displaySize.x, displaySize.y);
+            int maxSide = Math.max(displaySize.x, displaySize.y);
+            int leftSide = maxSide * 35 / 100;
+            if (leftSide < dp(320)) {
+                leftSide = dp(320);
+            }
+            return Math.min(smallSide, maxSide - leftSide);
+        }
+    }
+
+    public static void checkDisplaySize() {
+        try {
+            WindowManager manager = (WindowManager)ApplicationLoader.applicationContext.getSystemService(Context.WINDOW_SERVICE);
+            if (manager != null) {
+                Display display = manager.getDefaultDisplay();
+                if (display != null) {
+                    display.getMetrics(displayMetrics);
+                    if(android.os.Build.VERSION.SDK_INT < 13) {
+                        displaySize.set(display.getWidth(), display.getHeight());
+                    } else {
+                        display.getSize(displaySize);
+                    }
+                    FileLog.e("tmessages", "display size = " + displaySize.x + " " + displaySize.y + " " + displayMetrics.xdpi + "x" + displayMetrics.ydpi);
+                }
+            }
+        } catch (Exception e) {
+            FileLog.e("tmessages", e);
+        }
+    }
 }

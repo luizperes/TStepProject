@@ -21,7 +21,6 @@ import android.util.Xml;
 import org.telegram.android.time.FastDateFormat;
 import org.telegram.messenger.ConnectionsManager;
 import org.telegram.messenger.FileLog;
-import org.telegram.messenger.R;
 import org.telegram.messenger.TLRPC;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -37,6 +36,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import project.main.steptaneous.R;
 
 public class LocaleController {
 
