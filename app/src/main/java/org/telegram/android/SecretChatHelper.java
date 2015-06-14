@@ -35,6 +35,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import project.main.steptaneous.R;
+
 public class SecretChatHelper {
 
     public static final int CURRENT_SECRET_CHAT_LAYER = 23;

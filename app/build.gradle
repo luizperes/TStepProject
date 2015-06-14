@@ -1,4 +1,6 @@
+
 apply plugin: 'com.android.application'
+
 
 android {
     compileSdkVersion 21
@@ -17,6 +19,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions.encoding = 'ISO-8859-1'
 }
 
 dependencies {

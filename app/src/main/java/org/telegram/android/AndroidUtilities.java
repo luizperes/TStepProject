@@ -18,6 +18,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.os.Environment;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -40,7 +41,9 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.ui.Components.ForegroundDetector;
 import org.telegram.ui.Components.TypefaceSpan;
 
+import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -389,11 +392,11 @@ public class AndroidUtilities
                     if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     } else {
-                        activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
                     }
                 } else if (rotation == Surface.ROTATION_90) {
                     if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                        activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
                     } else {
                         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     }
@@ -405,9 +408,9 @@ public class AndroidUtilities
                     }
                 } else {
                     if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                        activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
                     } else {
-                        activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
                     }
                 }
             }
@@ -428,5 +431,55 @@ public class AndroidUtilities
         } catch (Exception e) {
             FileLog.e("tmessages", e);
         }
+    }
+
+    public static File getCacheDir() {
+        String state = null;
+        try {
+            state = Environment.getExternalStorageState();
+        } catch (Exception e) {
+            FileLog.e("tmessages", e);
+        }
+        if (state == null || state.startsWith(Environment.MEDIA_MOUNTED)) {
+            try {
+                File file = ApplicationLoader.applicationContext.getExternalCacheDir();
+                if (file != null) {
+                    return file;
+                }
+            } catch (Exception e) {
+                FileLog.e("tmessages", e);
+            }
+        }
+        try {
+            File file = ApplicationLoader.applicationContext.getCacheDir();
+            if (file != null) {
+                return file;
+            }
+        } catch (Exception e) {
+            FileLog.e("tmessages", e);
+        }
+        return new File("");
+    }
+
+    public static Point getRealScreenSize() {
+        Point size = new Point();
+        try {
+            WindowManager windowManager = (WindowManager) ApplicationLoader.applicationContext.getSystemService(Context.WINDOW_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                windowManager.getDefaultDisplay().getRealSize(size);
+            } else {
+                try {
+                    Method mGetRawW = Display.class.getMethod("getRawWidth");
+                    Method mGetRawH = Display.class.getMethod("getRawHeight");
+                    size.set((Integer) mGetRawW.invoke(windowManager.getDefaultDisplay()), (Integer) mGetRawH.invoke(windowManager.getDefaultDisplay()));
+                } catch (Exception e) {
+                    size.set(windowManager.getDefaultDisplay().getWidth(), windowManager.getDefaultDisplay().getHeight());
+                    FileLog.e("tmessages", e);
+                }
+            }
+        } catch (Exception e) {
+            FileLog.e("tmessages", e);
+        }
+        return size;
     }
 }

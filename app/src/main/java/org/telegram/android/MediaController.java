@@ -72,6 +72,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import project.main.steptaneous.R;
+
 public class MediaController implements NotificationCenter.NotificationCenterDelegate, SensorEventListener {
 
     private native int startRecord(String path);

@@ -29,7 +29,7 @@ import org.telegram.android.SendMessagesHelper;
 import org.telegram.messenger.ConnectionsManager;
 import org.telegram.messenger.FileLoader;
 import org.telegram.android.MediaController;
-import org.telegram.messenger.R;
+
 import org.telegram.messenger.TLRPC;
 import org.telegram.messenger.Utilities;
 import org.telegram.android.MessageObject;
@@ -40,6 +40,8 @@ import org.telegram.android.ImageReceiver;
 
 import java.io.File;
 import java.util.Locale;
+
+import project.main.steptaneous.R;
 
 public class ChatMediaCell extends ChatBaseCell implements MediaController.FileDownloadProgressListener {
 
@@ -101,25 +103,25 @@ public class ChatMediaCell extends ChatBaseCell implements MediaController.FileD
         super(context);
 
         if (placeholderDocInDrawable == null) {
-            placeholderDocInDrawable = getResources().getDrawable(R.drawable.doc_blue);
-            placeholderDocOutDrawable = getResources().getDrawable(R.drawable.doc_green);
-            buttonStatesDrawables[0] = getResources().getDrawable(R.drawable.photoload);
-            buttonStatesDrawables[1] = getResources().getDrawable(R.drawable.photocancel);
-            buttonStatesDrawables[2] = getResources().getDrawable(R.drawable.photogif);
-            buttonStatesDrawables[3] = getResources().getDrawable(R.drawable.playvideo);
-            buttonStatesDrawables[4] = getResources().getDrawable(R.drawable.photopause);
-            buttonStatesDrawables[5] = getResources().getDrawable(R.drawable.burn);
-            buttonStatesDrawables[6] = getResources().getDrawable(R.drawable.circle);
-            buttonStatesDrawables[7] = getResources().getDrawable(R.drawable.photocheck);
-            buttonStatesDrawablesDoc[0][0] = getResources().getDrawable(R.drawable.docload_b);
-            buttonStatesDrawablesDoc[1][0] = getResources().getDrawable(R.drawable.doccancel_b);
-            buttonStatesDrawablesDoc[2][0] = getResources().getDrawable(R.drawable.docpause_b);
-            buttonStatesDrawablesDoc[0][1] = getResources().getDrawable(R.drawable.docload_g);
-            buttonStatesDrawablesDoc[1][1] = getResources().getDrawable(R.drawable.doccancel_g);
-            buttonStatesDrawablesDoc[2][1] = getResources().getDrawable(R.drawable.docpause_g);
-            videoIconDrawable = getResources().getDrawable(R.drawable.ic_video);
-            docMenuInDrawable = getResources().getDrawable(R.drawable.doc_actions_b);
-            docMenuOutDrawable = getResources().getDrawable(R.drawable.doc_actions_g);
+            placeholderDocInDrawable = getResources().getDrawable(R.mipmap.doc_blue);
+            placeholderDocOutDrawable = getResources().getDrawable(R.mipmap.doc_green);
+            buttonStatesDrawables[0] = getResources().getDrawable(R.mipmap.photoload);
+            buttonStatesDrawables[1] = getResources().getDrawable(R.mipmap.photocancel);
+            buttonStatesDrawables[2] = getResources().getDrawable(R.mipmap.photogif);
+            buttonStatesDrawables[3] = getResources().getDrawable(R.mipmap.playvideo);
+            buttonStatesDrawables[4] = getResources().getDrawable(R.mipmap.photopause);
+            buttonStatesDrawables[5] = getResources().getDrawable(R.mipmap.burn);
+            buttonStatesDrawables[6] = getResources().getDrawable(R.mipmap.circle);
+            buttonStatesDrawables[7] = getResources().getDrawable(R.mipmap.photocheck);
+            buttonStatesDrawablesDoc[0][0] = getResources().getDrawable(R.mipmap.docload_b);
+            buttonStatesDrawablesDoc[1][0] = getResources().getDrawable(R.mipmap.doccancel_b);
+            buttonStatesDrawablesDoc[2][0] = getResources().getDrawable(R.mipmap.docpause_b);
+            buttonStatesDrawablesDoc[0][1] = getResources().getDrawable(R.mipmap.docload_g);
+            buttonStatesDrawablesDoc[1][1] = getResources().getDrawable(R.mipmap.doccancel_g);
+            buttonStatesDrawablesDoc[2][1] = getResources().getDrawable(R.mipmap.docpause_g);
+            videoIconDrawable = getResources().getDrawable(R.mipmap.ic_video);
+            docMenuInDrawable = getResources().getDrawable(R.mipmap.doc_actions_b);
+            docMenuOutDrawable = getResources().getDrawable(R.mipmap.doc_actions_g);
 
             infoPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
             infoPaint.setTextSize(AndroidUtilities.dp(12));
