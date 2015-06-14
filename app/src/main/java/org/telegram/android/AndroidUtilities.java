@@ -8,7 +8,9 @@ package org.telegram.android;
  * Copyright Luiz Peres, 2015.
  */
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -22,11 +24,14 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.EdgeEffect;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ConnectionsManager;
@@ -52,6 +57,7 @@ public class AndroidUtilities
     public static DisplayMetrics displayMetrics = new DisplayMetrics();
     public static Point displaySize = new Point();
     public static int statusBarHeight = 0;
+    private static int prevOrientation = -10;
 
     static
     {
@@ -346,6 +352,81 @@ public class AndroidUtilities
             } catch (Exception e) {
                 FileLog.e("tmessages", e);
             }
+        }
+    }
+
+    public static void clearCursorDrawable(EditText editText) {
+        if (editText == null || Build.VERSION.SDK_INT < 12) {
+            return;
+        }
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.setInt(editText, 0);
+        } catch (Exception e) {
+            FileLog.e("tmessages", e);
+        }
+    }
+
+    public static void lockOrientation(Activity activity) {
+        if (activity == null || prevOrientation != -10 || Build.VERSION.SDK_INT < 9) {
+            return;
+        }
+        try {
+            prevOrientation = activity.getRequestedOrientation();
+            WindowManager manager = (WindowManager)activity.getSystemService(Activity.WINDOW_SERVICE);
+            if (manager != null && manager.getDefaultDisplay() != null) {
+                int rotation = manager.getDefaultDisplay().getRotation();
+                int orientation = activity.getResources().getConfiguration().orientation;
+                int SCREEN_ORIENTATION_REVERSE_LANDSCAPE = 8;
+                int SCREEN_ORIENTATION_REVERSE_PORTRAIT = 9;
+                if (Build.VERSION.SDK_INT < 9) {
+                    SCREEN_ORIENTATION_REVERSE_LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                    SCREEN_ORIENTATION_REVERSE_PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                }
+
+                if (rotation == Surface.ROTATION_270) {
+                    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    } else {
+                        activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                    }
+                } else if (rotation == Surface.ROTATION_90) {
+                    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                    } else {
+                        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    }
+                } else if (rotation == Surface.ROTATION_0) {
+                    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    } else {
+                        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    }
+                } else {
+                    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                    } else {
+                        activity.setRequestedOrientation(SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            FileLog.e("tmessages", e);
+        }
+    }
+
+    public static void unlockOrientation(Activity activity) {
+        if (activity == null || Build.VERSION.SDK_INT < 9) {
+            return;
+        }
+        try {
+            if (prevOrientation != -10) {
+                activity.setRequestedOrientation(prevOrientation);
+                prevOrientation = -10;
+            }
+        } catch (Exception e) {
+            FileLog.e("tmessages", e);
         }
     }
 }

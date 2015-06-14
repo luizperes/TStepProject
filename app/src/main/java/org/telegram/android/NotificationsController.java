@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import project.main.steptaneous.MainActivity;
+import project.main.steptaneous.PopupNotificationActivity;
 import project.main.steptaneous.R;
 
 public class NotificationsController {

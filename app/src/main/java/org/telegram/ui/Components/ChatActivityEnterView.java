@@ -351,7 +351,7 @@ public class ChatActivityEnterView extends FrameLayoutFixed implements Notificat
         linearLayout.setLayoutParams(layoutParams1);
 
         imageView = new ImageView(context);
-        imageView.setImageResource(R.drawable.rec);
+        imageView.setImageResource(R.mipmap.rec);
         linearLayout.addView(imageView);
         layoutParams = (LinearLayout.LayoutParams) imageView.getLayoutParams();
         layoutParams.width = LayoutParams.WRAP_CONTENT;
@@ -469,7 +469,7 @@ public class ChatActivityEnterView extends FrameLayoutFixed implements Notificat
         sendButton = new ImageView(context);
         sendButton.setVisibility(View.INVISIBLE);
         sendButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        sendButton.setImageResource(R.drawable.ic_send);
+        sendButton.setImageResource(R.mipmap.ic_send);
         sendButton.setSoundEffectsEnabled(false);
         ViewProxy.setScaleX(sendButton, 0.1f);
         ViewProxy.setScaleY(sendButton, 0.1f);
@@ -1063,7 +1063,7 @@ public class ChatActivityEnterView extends FrameLayoutFixed implements Notificat
                 }*/
                 if (sizeNotifierRelativeLayout != null) {
                     sizeNotifierRelativeLayout.setPadding(0, 0, 0, currentHeight);
-                    emojiButton.setImageResource(R.drawable.ic_msg_panel_hide);
+                    emojiButton.setImageResource(R.mipmap.ic_msg_panel_hide);
                     onWindowSizeChanged(sizeNotifierRelativeLayout.getHeight() - sizeNotifierRelativeLayout.getPaddingBottom());
                 }
                 return;
@@ -1079,11 +1079,11 @@ public class ChatActivityEnterView extends FrameLayoutFixed implements Notificat
                     }
                 }*/
             }
-            emojiButton.setImageResource(R.drawable.ic_msg_panel_kb);
+            emojiButton.setImageResource(R.mipmap.ic_msg_panel_kb);
             return;
         }
         if (emojiButton != null) {
-            emojiButton.setImageResource(R.drawable.ic_msg_panel_smiles);
+            emojiButton.setImageResource(R.mipmap.ic_msg_panel_smiles);
         }
         if (emojiPopup != null) {
             try {

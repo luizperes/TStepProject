@@ -46,9 +46,14 @@ import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.TLRPC;
 import org.telegram.ui.ActionBar.ActionBar;
+import org.telegram.ui.ActionBar.ActionBarMenu;
 import org.telegram.ui.Components.AvatarDrawable;
+import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.ChatActivityEnterView;
 import org.telegram.ui.Components.FrameLayoutFixed;
+import org.telegram.ui.Components.PopupAudioView;
+import org.telegram.ui.Components.SizeNotifierRelativeLayout;
+import org.telegram.ui.Components.TypingDotsDrawable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -233,7 +238,7 @@ public class PopupNotificationActivity extends Activity implements NotificationC
 
         actionBar = new ActionBar(this);
         actionBar.setOccupyStatusBar(false);
-        actionBar.setBackButtonImage(R.drawable.ic_ab_back);
+        actionBar.setBackButtonImage(R.mipmap.ic_ab_back);
         actionBar.setBackgroundColor(0xff54759e);
         actionBar.setItemsBackground(R.drawable.bar_selector);
         popupContainer.addView(actionBar);
@@ -274,7 +279,7 @@ public class PopupNotificationActivity extends Activity implements NotificationC
         nameTextView.setSingleLine(true);
         nameTextView.setEllipsize(TextUtils.TruncateAt.END);
         nameTextView.setGravity(Gravity.LEFT);
-        nameTextView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
+        nameTextView.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
         avatarContainer.addView(nameTextView);
         layoutParams2 = (FrameLayout.LayoutParams) nameTextView.getLayoutParams();
         layoutParams2.width = FrameLayout.LayoutParams.WRAP_CONTENT;
@@ -820,7 +825,7 @@ public class PopupNotificationActivity extends Activity implements NotificationC
         if (currentMessageObject == null) {
             return;
         }
-        Intent intent = new Intent(ApplicationLoader.applicationContext, LaunchActivity.class);
+        Intent intent = new Intent(ApplicationLoader.applicationContext, MainActivity.class);
         long dialog_id = currentMessageObject.getDialogId();
         if ((int)dialog_id != 0) {
             int lower_id = (int)dialog_id;
@@ -868,7 +873,7 @@ public class PopupNotificationActivity extends Activity implements NotificationC
         } else if (currentUser != null) {
             nameTextView.setText(ContactsController.formatName(currentUser.first_name, currentUser.last_name));
             if ((int)dialog_id == 0) {
-                nameTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock_white, 0, 0, 0);
+                nameTextView.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_lock_white, 0, 0, 0);
                 nameTextView.setCompoundDrawablePadding(AndroidUtilities.dp(4));
             } else {
                 nameTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
