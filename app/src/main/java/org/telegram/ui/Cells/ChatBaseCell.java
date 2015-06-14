@@ -146,26 +146,26 @@ public class ChatBaseCell extends BaseCell {
     public ChatBaseCell(Context context) {
         super(context);
         if (backgroundDrawableIn == null) {
-            backgroundDrawableIn = getResources().getDrawable(R.drawable.msg_in);
-            backgroundDrawableInSelected = getResources().getDrawable(R.drawable.msg_in_selected);
-            backgroundDrawableOut = getResources().getDrawable(R.drawable.msg_out);
-            backgroundDrawableOutSelected = getResources().getDrawable(R.drawable.msg_out_selected);
-            backgroundMediaDrawableIn = getResources().getDrawable(R.drawable.msg_in_photo);
-            backgroundMediaDrawableInSelected = getResources().getDrawable(R.drawable.msg_in_photo_selected);
-            backgroundMediaDrawableOut = getResources().getDrawable(R.drawable.msg_out_photo);
-            backgroundMediaDrawableOutSelected = getResources().getDrawable(R.drawable.msg_out_photo_selected);
-            checkDrawable = getResources().getDrawable(R.drawable.msg_check);
-            halfCheckDrawable = getResources().getDrawable(R.drawable.msg_halfcheck);
-            clockDrawable = getResources().getDrawable(R.drawable.msg_clock);
-            checkMediaDrawable = getResources().getDrawable(R.drawable.msg_check_w);
-            halfCheckMediaDrawable = getResources().getDrawable(R.drawable.msg_halfcheck_w);
-            clockMediaDrawable = getResources().getDrawable(R.drawable.msg_clock_photo);
-            errorDrawable = getResources().getDrawable(R.drawable.msg_warning);
-            mediaBackgroundDrawable = getResources().getDrawable(R.drawable.phototime);
-            broadcastDrawable = getResources().getDrawable(R.drawable.broadcast3);
-            broadcastMediaDrawable = getResources().getDrawable(R.drawable.broadcast4);
-            backgroundBlack = getResources().getDrawable(R.drawable.system_black);
-            backgroundBlue = getResources().getDrawable(R.drawable.system_blue);
+            backgroundDrawableIn = getResources().getDrawable(R.mipmap.msg_in);
+            backgroundDrawableInSelected = getResources().getDrawable(R.mipmap.msg_in_selected);
+            backgroundDrawableOut = getResources().getDrawable(R.mipmap.msg_out);
+            backgroundDrawableOutSelected = getResources().getDrawable(R.mipmap.msg_out_selected);
+            backgroundMediaDrawableIn = getResources().getDrawable(R.mipmap.msg_in_photo);
+            backgroundMediaDrawableInSelected = getResources().getDrawable(R.mipmap.msg_in_photo_selected);
+            backgroundMediaDrawableOut = getResources().getDrawable(R.mipmap.msg_out_photo);
+            backgroundMediaDrawableOutSelected = getResources().getDrawable(R.mipmap.msg_out_photo_selected);
+            checkDrawable = getResources().getDrawable(R.mipmap.msg_check);
+            halfCheckDrawable = getResources().getDrawable(R.mipmap.msg_halfcheck);
+            clockDrawable = getResources().getDrawable(R.mipmap.msg_clock);
+            checkMediaDrawable = getResources().getDrawable(R.mipmap.msg_check_w);
+            halfCheckMediaDrawable = getResources().getDrawable(R.mipmap.msg_halfcheck_w);
+            clockMediaDrawable = getResources().getDrawable(R.mipmap.msg_clock_photo);
+            errorDrawable = getResources().getDrawable(R.mipmap.msg_warning);
+            mediaBackgroundDrawable = getResources().getDrawable(R.mipmap.phototime);
+            broadcastDrawable = getResources().getDrawable(R.mipmap.broadcast3);
+            broadcastMediaDrawable = getResources().getDrawable(R.mipmap.broadcast4);
+            backgroundBlack = getResources().getDrawable(R.mipmap.system_black);
+            backgroundBlue = getResources().getDrawable(R.mipmap.system_blue);
 
             timePaintIn = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             timePaintIn.setTextSize(AndroidUtilities.dp(12));
@@ -186,7 +186,7 @@ public class ChatBaseCell extends BaseCell {
             forwardNamePaint.setTextSize(AndroidUtilities.dp(14));
 
             replyNamePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            replyNamePaint.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
+            replyNamePaint.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
             replyNamePaint.setTextSize(AndroidUtilities.dp(14));
 
             replyTextPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
@@ -363,7 +363,7 @@ public class ChatBaseCell extends BaseCell {
                 forwardedNameWidth = getMaxNameWidth();
 
                 CharSequence str = TextUtils.ellipsize(currentForwardNameString.replace("\n", " "), forwardNamePaint, forwardedNameWidth - AndroidUtilities.dp(40), TextUtils.TruncateAt.END);
-                str = AndroidUtilities.replaceTags(String.format("%s\n%s <b>%s</b>", LocaleController.getString("ForwardedMessage", R.string.ForwardedMessage), LocaleController.getString("From", R.string.From), str));
+                str = AndroidUtilities.replaceTags(ApplicationLoader.applicationContext, String.format("%s\n%s <b>%s</b>", LocaleController.getString("ForwardedMessage", R.string.ForwardedMessage), LocaleController.getString("From", R.string.From), str));
                 forwardedNameLayout = new StaticLayout(str, forwardNamePaint, forwardedNameWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
                 if (forwardedNameLayout.getLineCount() > 1) {
                     forwardedNameWidth = Math.max((int) Math.ceil(forwardedNameLayout.getLineWidth(0)), (int) Math.ceil(forwardedNameLayout.getLineWidth(1)));

@@ -693,7 +693,7 @@ public class Utilities {
                 builder.append(" ");
             }
             query.trim();
-            builder.append(AndroidUtilities.replaceTags(ApplicationLoader.applicationContext,ApplicationLoader.applicationContext.getAssets(), "<c#ff4d83b3>" + query + "</c>"));
+            builder.append(AndroidUtilities.replaceTags(ApplicationLoader.applicationContext, "<c#ff4d83b3>" + query + "</c>"));
 
             lastIndex = end;
         }

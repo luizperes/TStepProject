@@ -25,6 +25,15 @@
             android:label="@string/title_activity_intro" >
         </activity>
 
+        <activity
+            android:name=".PopupNotificationActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+
         <receiver android:name="org.telegram.android.SmsListener">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

@@ -10,8 +10,10 @@ package org.telegram.android;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.text.Spannable;
@@ -20,12 +22,20 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.EdgeEffect;
 
 import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.ConnectionsManager;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.UserConfig;
+import org.telegram.ui.Components.ForegroundDetector;
 import org.telegram.ui.Components.TypefaceSpan;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -41,6 +51,7 @@ public class AndroidUtilities
     private static Boolean isTablet = null;
     public static DisplayMetrics displayMetrics = new DisplayMetrics();
     public static Point displaySize = new Point();
+    public static int statusBarHeight = 0;
 
     static
     {
@@ -71,7 +82,7 @@ public class AndroidUtilities
         return (int)Math.ceil(density * value);
     }
 
-    public static Spannable replaceTags(Context appCtx, AssetManager appAssets, String str)
+    public static Spannable replaceTags(Context appCtx, String str)
     {
         try {
             int start = -1;
@@ -107,7 +118,7 @@ public class AndroidUtilities
             }
             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(stringBuilder);
             for (int a = 0; a < bolds.size() / 2; a++) {
-                spannableStringBuilder.setSpan(new TypefaceSpan(AndroidUtilities.getTypeface(appCtx, appAssets, "fonts/rmedium.ttf")), bolds.get(a * 2), bolds.get(a * 2 + 1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableStringBuilder.setSpan(new TypefaceSpan(AndroidUtilities.getTypeface(appCtx, "fonts/rmedium.ttf")), bolds.get(a * 2), bolds.get(a * 2 + 1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             for (int a = 0; a < colors.size() / 3; a++) {
                 spannableStringBuilder.setSpan(new ForegroundColorSpan(colors.get(a * 3 + 2)), colors.get(a * 3), colors.get(a * 3 + 1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -120,11 +131,11 @@ public class AndroidUtilities
         return new SpannableStringBuilder(str);
     }
 
-    public static Typeface getTypeface(Context appCtx, AssetManager appAssets, String assetPath) {
+    public static Typeface getTypeface(Context appCtx, String assetPath) {
         synchronized (typefaceCache) {
             if (!typefaceCache.containsKey(assetPath)) {
                 try {
-                    Typeface t = Typeface.createFromAsset(appAssets, assetPath);
+                    Typeface t = Typeface.createFromAsset(appCtx.getAssets(), assetPath);
                     typefaceCache.put(assetPath, t);
                 } catch (Exception e) {
                     FileLog.e("Typefaces", "Could not get typeface '" + assetPath + "' because " + e.getMessage());
@@ -226,6 +237,115 @@ public class AndroidUtilities
             }
         } catch (Exception e) {
             FileLog.e("tmessages", e);
+        }
+    }
+
+    public static int getMyLayerVersion(int layer) {
+        return layer & 0xffff;
+    }
+
+    public static int getPeerLayerVersion(int layer) {
+        return (layer >> 16) & 0xffff;
+    }
+
+    public static int setMyLayerVersion(int layer, int version) {
+        return layer & 0xffff0000 | version;
+    }
+
+    public static int setPeerLayerVersion(int layer, int version) {
+        return layer & 0x0000ffff | (version << 16);
+    }
+
+    public static boolean needShowPasscode(boolean reset) {
+        boolean wasInBackground;
+        if (Build.VERSION.SDK_INT >= 14) {
+            wasInBackground = ForegroundDetector.getInstance().isWasInBackground(reset);
+            if (reset) {
+                ForegroundDetector.getInstance().resetBackgroundVar();
+            }
+        } else {
+            wasInBackground = UserConfig.lastPauseTime != 0;
+        }
+        return UserConfig.passcodeHash.length() > 0 && wasInBackground &&
+                (UserConfig.appLocked || UserConfig.autoLockIn != 0 && UserConfig.lastPauseTime != 0 && !UserConfig.appLocked && (UserConfig.lastPauseTime + UserConfig.autoLockIn) <= ConnectionsManager.getInstance().getCurrentTime());
+    }
+
+    public static void cancelRunOnUIThread(Runnable runnable) {
+        ApplicationLoader.applicationHandler.removeCallbacks(runnable);
+    }
+
+    public static void hideKeyboard(View view) {
+        if (view == null) {
+            return;
+        }
+        InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (!imm.isActive()) {
+            return;
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void showKeyboard(View view) {
+        if (view == null) {
+            return;
+        }
+        InputMethodManager inputManager = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public static float getPixelsInCM(float cm, boolean isX) {
+        return (cm / 2.54f) * (isX ? displayMetrics.xdpi : displayMetrics.ydpi);
+    }
+
+    public static int getCurrentActionBarHeight() {
+        if (isTablet()) {
+            return dp(64);
+        } else if (ApplicationLoader.applicationContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            return dp(48);
+        } else {
+            return dp(56);
+        }
+    }
+
+    public static int getViewInset(View view) {
+        if (view == null || Build.VERSION.SDK_INT < 21) {
+            return 0;
+        }
+        try {
+            Field mAttachInfoField = View.class.getDeclaredField("mAttachInfo");
+            mAttachInfoField.setAccessible(true);
+            Object mAttachInfo = mAttachInfoField.get(view);
+            if (mAttachInfo != null) {
+                Field mStableInsetsField = mAttachInfo.getClass().getDeclaredField("mStableInsets");
+                mStableInsetsField.setAccessible(true);
+                Rect insets = (Rect)mStableInsetsField.get(mAttachInfo);
+                return insets.bottom;
+            }
+        } catch (Exception e) {
+            FileLog.e("tmessages", e);
+        }
+        return 0;
+    }
+
+    public static void setListViewEdgeEffectColor(AbsListView listView, int color) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            try {
+                Field field = AbsListView.class.getDeclaredField("mEdgeGlowTop");
+                field.setAccessible(true);
+                EdgeEffect mEdgeGlowTop = (EdgeEffect) field.get(listView);
+                if (mEdgeGlowTop != null) {
+                    mEdgeGlowTop.setColor(color);
+                }
+
+                field = AbsListView.class.getDeclaredField("mEdgeGlowBottom");
+                field.setAccessible(true);
+                EdgeEffect mEdgeGlowBottom = (EdgeEffect) field.get(listView);
+                if (mEdgeGlowBottom != null) {
+                    mEdgeGlowBottom.setColor(color);
+                }
+            } catch (Exception e) {
+                FileLog.e("tmessages", e);
+            }
         }
     }
 }

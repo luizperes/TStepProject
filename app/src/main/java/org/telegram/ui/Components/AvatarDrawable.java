@@ -66,7 +66,7 @@ public class AvatarDrawable extends Drawable {
             namePaintSmall.setColor(0xffffffff);
             namePaintSmall.setTextSize(AndroidUtilities.dp(14));
 
-            broadcastDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.broadcast_w);
+            broadcastDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.mipmap.broadcast_w);
         }
     }
 
@@ -230,7 +230,7 @@ public class AvatarDrawable extends Drawable {
 
     public void setDrawPhoto(boolean value) {
         if (value && photoDrawable == null) {
-            photoDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.photo_w);
+            photoDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.mipmap.photo_w);
         }
         drawPhoto = value;
     }
