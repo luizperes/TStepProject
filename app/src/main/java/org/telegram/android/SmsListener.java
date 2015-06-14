@@ -52,11 +52,11 @@ public class SmsListener extends BroadcastReceiver {
                             }
                         }
                     } catch (Throwable e) {
-                        FileLog.e(context, "tmessages", e);
+                        FileLog.e("tmessages", e);
                     }
 
                 } catch(Throwable e) {
-                    FileLog.e(context, "tmessages", e);
+                    FileLog.e("tmessages", e);
                 }
             }
         }

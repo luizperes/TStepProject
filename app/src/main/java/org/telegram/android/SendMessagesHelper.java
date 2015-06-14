@@ -36,6 +36,8 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import project.main.steptaneous.R;
+
 public class SendMessagesHelper implements NotificationCenter.NotificationCenterDelegate {
 
     private TLRPC.ChatParticipants currentChatInfo = null;
