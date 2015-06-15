@@ -20,6 +20,11 @@ android {
         }
     }
 
+    sourceSets.main {
+        jniLibs.srcDir 'libs'
+        jni.srcDirs = [] //disable automatic ndk-build call
+    }
+
     compileOptions.encoding = 'ISO-8859-1'
 }
 
