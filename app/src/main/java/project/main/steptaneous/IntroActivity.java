@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.view.View;
 
 import org.telegram.android.AndroidUtilities;
+import org.telegram.messenger.ApplicationLoader;
 
 
 public class IntroActivity extends Activity
@@ -92,8 +93,7 @@ public class IntroActivity extends Activity
         startMessagingButton.setText(getString(R.string.start_stepss).toUpperCase());
         if (Build.VERSION.SDK_INT >= 21) {
             StateListAnimator animator = new StateListAnimator();
-            DisplayMetrics dpMetrics = getResources().getDisplayMetrics();
-            animator.addState(new int[] {}, ObjectAnimator.ofFloat(startMessagingButton, "translationZ", AndroidUtilities.dp(dpMetrics, 4), AndroidUtilities.dp(dpMetrics, 2)).setDuration(200));
+            animator.addState(new int[] {}, ObjectAnimator.ofFloat(startMessagingButton, "translationZ", AndroidUtilities.dp(4), AndroidUtilities.dp(2)).setDuration(200));
             startMessagingButton.setStateListAnimator(animator);
         }
         topImage1 = (ImageView)findViewById(R.id.icon_image1);
@@ -222,7 +222,7 @@ public class IntroActivity extends Activity
             container.addView(view, 0);
 
             headerTextView.setText(getString(titles[position]));
-            messageTextView.setText(AndroidUtilities.replaceTags(getApplicationContext(), getAssets(), getString(messages[position])));
+            messageTextView.setText(AndroidUtilities.replaceTags(ApplicationLoader.applicationContext, getString(messages[position])));
 
             return view;
         }

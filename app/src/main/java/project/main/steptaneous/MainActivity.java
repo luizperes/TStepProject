@@ -28,6 +28,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.UserConfig;
+
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -49,6 +52,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent theIntent = getIntent();
+
+        ApplicationLoader.postInitApplication();
 
         if (!UserConfig.isClientActivated())
         {

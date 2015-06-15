@@ -32,9 +32,9 @@ import android.widget.TextView;
 
 import org.telegram.android.AndroidUtilities;
 import org.telegram.android.LocaleController;
+import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.DispatchQueue;
 import org.telegram.messenger.FileLog;
-import org.telegram.messenger.R;
 import org.telegram.messenger.Utilities;
 import org.telegram.ui.AnimationCompat.AnimatorListenerAdapterProxy;
 import org.telegram.ui.AnimationCompat.AnimatorSetProxy;
@@ -54,6 +54,8 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL;
 import javax.microedition.khronos.opengles.GL10;
+
+import project.main.steptaneous.R;
 
 public class PhotoFilterView extends FrameLayout {
 
@@ -1421,7 +1423,7 @@ public class PhotoFilterView extends FrameLayout {
         cancelTextView.setBackgroundResource(R.drawable.bar_selector_picker);
         cancelTextView.setPadding(AndroidUtilities.dp(29), 0, AndroidUtilities.dp(29), 0);
         cancelTextView.setText(LocaleController.getString("Cancel", R.string.Cancel).toUpperCase());
-        cancelTextView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
+        cancelTextView.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
         frameLayout.addView(cancelTextView);
         layoutParams = (LayoutParams) cancelTextView.getLayoutParams();
         layoutParams.width = LayoutParams.WRAP_CONTENT;
@@ -1436,7 +1438,7 @@ public class PhotoFilterView extends FrameLayout {
         doneTextView.setBackgroundResource(R.drawable.bar_selector_picker);
         doneTextView.setPadding(AndroidUtilities.dp(29), 0, AndroidUtilities.dp(29), 0);
         doneTextView.setText(LocaleController.getString("Done", R.string.Done).toUpperCase());
-        doneTextView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
+        doneTextView.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
         frameLayout.addView(doneTextView);
         layoutParams = (LayoutParams) doneTextView.getLayoutParams();
         layoutParams.width = LayoutParams.WRAP_CONTENT;
@@ -1531,7 +1533,7 @@ public class PhotoFilterView extends FrameLayout {
         frameLayout.setLayoutParams(layoutParams);
 
         ImageView imageView = new ImageView(context);
-        imageView.setImageResource(R.drawable.edit_cancel);
+        imageView.setImageResource(R.mipmap.edit_cancel);
         imageView.setBackgroundResource(R.drawable.bar_selector_picker);
         imageView.setPadding(AndroidUtilities.dp(22), 0, AndroidUtilities.dp(22), 0);
         frameLayout.addView(imageView);
@@ -1574,7 +1576,7 @@ public class PhotoFilterView extends FrameLayout {
         });
 
         imageView = new ImageView(context);
-        imageView.setImageResource(R.drawable.edit_doneblue);
+        imageView.setImageResource(R.mipmap.edit_doneblue);
         imageView.setBackgroundResource(R.drawable.bar_selector_picker);
         imageView.setPadding(AndroidUtilities.dp(22), AndroidUtilities.dp(1), AndroidUtilities.dp(22), 0);
         frameLayout.addView(imageView);
@@ -1682,7 +1684,7 @@ public class PhotoFilterView extends FrameLayout {
         blurLayout.setLayoutParams(layoutParams);
 
         blurOffButton = new TextView(context);
-        blurOffButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_off_active, 0, 0);
+        blurOffButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_off_active, 0, 0);
         blurOffButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
         blurOffButton.setTextColor(0xff51bdf3);
         blurOffButton.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -1705,7 +1707,7 @@ public class PhotoFilterView extends FrameLayout {
         });
 
         blurRadialButton = new TextView(context);
-        blurRadialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_radial, 0, 0);
+        blurRadialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_radial, 0, 0);
         blurRadialButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
         blurRadialButton.setTextColor(0xffffffff);
         blurRadialButton.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -1730,7 +1732,7 @@ public class PhotoFilterView extends FrameLayout {
         });
 
         blurLinearButton = new TextView(context);
-        blurLinearButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_linear, 0, 0);
+        blurLinearButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_linear, 0, 0);
         blurLinearButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
         blurLinearButton.setTextColor(0xffffffff);
         blurLinearButton.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -1757,25 +1759,25 @@ public class PhotoFilterView extends FrameLayout {
 
     private void updateSelectedBlurType() {
         if (blurType == 0) {
-            blurOffButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_off_active, 0, 0);
+            blurOffButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_off_active, 0, 0);
             blurOffButton.setTextColor(0xff51bdf3);
-            blurRadialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_radial, 0, 0);
+            blurRadialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_radial, 0, 0);
             blurRadialButton.setTextColor(0xffffffff);
-            blurLinearButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_linear, 0, 0);
+            blurLinearButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_linear, 0, 0);
             blurLinearButton.setTextColor(0xffffffff);
         } else if (blurType == 1) {
-            blurOffButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_off, 0, 0);
+            blurOffButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_off, 0, 0);
             blurOffButton.setTextColor(0xffffffff);
-            blurRadialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_radial_active, 0, 0);
+            blurRadialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_radial_active, 0, 0);
             blurRadialButton.setTextColor(0xff51bdf3);
-            blurLinearButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_linear, 0, 0);
+            blurLinearButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_linear, 0, 0);
             blurLinearButton.setTextColor(0xffffffff);
         } else if (blurType == 2) {
-            blurOffButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_off, 0, 0);
+            blurOffButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_off, 0, 0);
             blurOffButton.setTextColor(0xffffffff);
-            blurRadialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_radial, 0, 0);
+            blurRadialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_radial, 0, 0);
             blurRadialButton.setTextColor(0xffffffff);
-            blurLinearButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.blur_linear_active, 0, 0);
+            blurLinearButton.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.blur_linear_active, 0, 0);
             blurLinearButton.setTextColor(0xff51bdf3);
         }
     }
@@ -2095,25 +2097,25 @@ public class PhotoFilterView extends FrameLayout {
         public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
             Holder holder = (Holder) viewHolder;
             if (i == enhanceTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_enhance, LocaleController.getString("Enhance", R.string.Enhance), enhanceValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_enhance, LocaleController.getString("Enhance", R.string.Enhance), enhanceValue);
             } else if (i == highlightsTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_highlights, LocaleController.getString("Highlights", R.string.Highlights), highlightsValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_highlights, LocaleController.getString("Highlights", R.string.Highlights), highlightsValue);
             } else if (i == contrastTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_contrast, LocaleController.getString("Contrast", R.string.Contrast), contrastValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_contrast, LocaleController.getString("Contrast", R.string.Contrast), contrastValue);
             } else if (i == exposureTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_brightness, LocaleController.getString("Exposure", R.string.Exposure), exposureValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_brightness, LocaleController.getString("Exposure", R.string.Exposure), exposureValue);
             } else if (i == warmthTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_warmth, LocaleController.getString("Warmth", R.string.Warmth), warmthValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_warmth, LocaleController.getString("Warmth", R.string.Warmth), warmthValue);
             } else if (i == saturationTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_saturation, LocaleController.getString("Saturation", R.string.Saturation), saturationValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_saturation, LocaleController.getString("Saturation", R.string.Saturation), saturationValue);
             } else if (i == vignetteTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_vignette, LocaleController.getString("Vignette", R.string.Vignette), vignetteValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_vignette, LocaleController.getString("Vignette", R.string.Vignette), vignetteValue);
             } else if (i == shadowsTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_shadows, LocaleController.getString("Shadows", R.string.Shadows), shadowsValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_shadows, LocaleController.getString("Shadows", R.string.Shadows), shadowsValue);
             } else if (i == grainTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_grain, LocaleController.getString("Grain", R.string.Grain), grainValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_grain, LocaleController.getString("Grain", R.string.Grain), grainValue);
             } else if (i == sharpenTool) {
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_details, LocaleController.getString("Sharpen", R.string.Sharpen), sharpenValue);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_details, LocaleController.getString("Sharpen", R.string.Sharpen), sharpenValue);
             } else if (i == blurTool) {
                 String value = "";
                 if (blurType == 1) {
@@ -2121,7 +2123,7 @@ public class PhotoFilterView extends FrameLayout {
                 } else if (blurType == 2) {
                     value = "L";
                 }
-                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.drawable.tool_blur, LocaleController.getString("Blur", R.string.Blur), value);
+                ((PhotoEditToolCell) holder.itemView).setIconAndTextAndValue(R.mipmap.tool_blur, LocaleController.getString("Blur", R.string.Blur), value);
             }
         }
     }
