@@ -10,4 +10,4 @@ gradlew.bat
 local.properties
 app/proguard-rules.pro
 
-app/src/main/java\org/telegram/messengerBuildVars
+app/src/main/java/org/telegram/messenger/BuildVars
