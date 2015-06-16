@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
 import android.text.Spannable;
@@ -24,6 +25,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.StateSet;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
@@ -32,12 +34,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.EdgeEffect;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ConnectionsManager;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.UserConfig;
+import org.telegram.ui.AnimationCompat.AnimatorListenerAdapterProxy;
+import org.telegram.ui.AnimationCompat.AnimatorSetProxy;
+import org.telegram.ui.AnimationCompat.ObjectAnimatorProxy;
+import org.telegram.ui.AnimationCompat.ViewProxy;
 import org.telegram.ui.Components.ForegroundDetector;
 import org.telegram.ui.Components.TypefaceSpan;
 
@@ -485,5 +492,42 @@ public class AndroidUtilities
 
     public static long makeBroadcastId(int id) {
         return 0x0000000100000000L | ((long)id & 0x00000000FFFFFFFFL);
+    }
+
+    public static void clearDrawableAnimation(View view) {
+        if (Build.VERSION.SDK_INT < 21 || view == null) {
+            return;
+        }
+        Drawable drawable = null;
+        if (view instanceof ListView) {
+            drawable = ((ListView) view).getSelector();
+            if (drawable != null) {
+                drawable.setState(StateSet.NOTHING);
+            }
+        } else {
+            drawable = view.getBackground();
+            if (drawable != null) {
+                drawable.setState(StateSet.NOTHING);
+                drawable.jumpToCurrentState();
+            }
+        }
+    }
+
+    public static void shakeTextView(final TextView textView, final float x, final int num) {
+        if (num == 6) {
+            ViewProxy.setTranslationX(textView, 0);
+            textView.clearAnimation();
+            return;
+        }
+        AnimatorSetProxy animatorSetProxy = new AnimatorSetProxy();
+        animatorSetProxy.playTogether(ObjectAnimatorProxy.ofFloat(textView, "translationX", AndroidUtilities.dp(x)));
+        animatorSetProxy.setDuration(50);
+        animatorSetProxy.addListener(new AnimatorListenerAdapterProxy() {
+            @Override
+            public void onAnimationEnd(Object animation) {
+                shakeTextView(textView, num == 5 ? 0 : -x, num + 1);
+            }
+        });
+        animatorSetProxy.start();
     }
 }

@@ -117,6 +117,7 @@ public class DrawerLayoutContainer extends FrameLayout {
         lp.bottomMargin = wi.getSystemWindowInsetBottom();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
     private int getTopInset(Object insets) {
         if (Build.VERSION.SDK_INT >= 21) {
             return insets != null ? ((WindowInsets) insets).getSystemWindowInsetTop() : 0;
@@ -130,6 +131,7 @@ public class DrawerLayoutContainer extends FrameLayout {
         requestLayout();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
     public void setDrawerLayout(ViewGroup layout) {
         drawerLayout = layout;
         addView(drawerLayout);

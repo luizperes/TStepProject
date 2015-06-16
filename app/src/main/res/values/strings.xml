@@ -23,4 +23,5 @@
     <string name="Page4Message"><![CDATA[<b>Stepss</b>]]> encryptes your location and all your messages.</string>
     <string name="Page5Message"><![CDATA[<b>Stepss</b>]]> deliver messages quickly to your friends.</string>
     <string name="start_stepss">Step It Up!</string>
+    <string name="title_activity_login_container">LoginContainerActivity</string>
 </resources>

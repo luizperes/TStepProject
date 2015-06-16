@@ -1,5 +1,5 @@
 /*
-     * Part of this source code is of Telegram for Android v. 1.3.2, Copyright Nikolai Kudashov, 2013.
+     * Part of this source code belongs to Telegram for Android v. 1.3.2, Copyright Nikolai Kudashov, 2013.
      * and this source code itself belongs to Stepss for Android v. 1.0
      * It is licensed under GNU GPL v. 2 or later.
      * You should have received a copy of the license in this archive (see LICENSE).
@@ -57,7 +57,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         if (!UserConfig.isClientActivated())
         {
-            if (theIntent != null && !theIntent.getBooleanExtra("fromIntro", false)) {
+            if ((theIntent != null) && !theIntent.getBooleanExtra("fromIntro", false))
+            {
                 Intent i = new Intent(this, IntroActivity.class);
                 startActivity(i);
                 super.onCreate(savedInstanceState);
@@ -65,12 +66,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 return;
             }
 
-            // TODO: put the LoginActivity in this case
+            Intent i = new Intent(this, LoginContainerActivity.class);
+            startActivity(i);
+            super.onCreate(savedInstanceState);
+            finish();
+            return;
         }
-
-
-        super.onCreate(savedInstanceState);
-        setElementsActivity();
+        else
+        {
+            super.onCreate(savedInstanceState);
+            setElementsActivity();
+        }
     }
 
     private void setElementsActivity() {
