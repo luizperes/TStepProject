@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ConnectionsManager;
 import org.telegram.messenger.FileLog;
 
@@ -79,7 +80,8 @@ public class BaseFragment {
             if (parentLayout != null) {
                 actionBar = new ActionBar(parentLayout.getContext());
                 actionBar.parentFragment = this;
-                actionBar.setBackgroundColor(0xff54759e);
+                //actionBar.setBackgroundColor(0xff54759e);
+                actionBar.setBackgroundColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_red));
                 actionBar.setItemsBackground(R.drawable.bar_selector);
             }
         }
@@ -175,6 +177,13 @@ public class BaseFragment {
     public void startActivityForResult(final Intent intent, final int requestCode) {
         if (parentLayout != null) {
             parentLayout.startActivityForResult(intent, requestCode);
+        }
+    }
+
+    public <T>void startActivity(final T classForIntent)
+    {
+        if (parentLayout != null) {
+            parentLayout.startActivity(classForIntent);
         }
     }
 

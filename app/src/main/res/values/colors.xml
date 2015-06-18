@@ -6,6 +6,12 @@
     <color name="step_green">#97C93C</color>
     <color name="step_grey">#FFBBBBBB</color>
 
+    <color name="step_dark_color">#FF212121</color>
+    <color name="step_light_grey">#FFDBDBDB</color>
+    <color name="step_half_light_grey">#FF979797</color>
+    <color name="step_half_dark_grey">#FF757575</color>
+    <color name="step_telegram_light_red">#FF6666</color>
+
     <!-- Telegram Colors -->
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="divider">#dcdcdc</color>

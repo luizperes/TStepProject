@@ -55,6 +55,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- BEGIN It is on the DEBUG file of Telegram -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!-- END It is on the DEBUG file of Telegram -->
+
+
     <application
         android:name="org.telegram.messenger.ApplicationLoader"
         android:allowBackup="true"
@@ -82,6 +87,10 @@
             android:taskAffinity=""
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
+        <activity
+            android:name=".LoginContainerActivity"
+            android:label="@string/title_activity_login_container" >
+        </activity>
 
         <receiver android:name="org.telegram.android.SmsListener" >
             <intent-filter>
@@ -89,10 +98,56 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".LoginContainerActivity"
-            android:label="@string/title_activity_login_container" >
-        </activity>
+        <!-- BEGIN It is on the DEBUG file of Telegram -->
+        <receiver
+            android:name="org.telegram.android.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="org.telegram.messenger" />
+            </intent-filter>
+        </receiver>
+        <!-- END It is on the DEBUG file of Telegram -->
+
+        <service android:name="org.telegram.android.AuthenticatorService" android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/auth"/>
+        </service>
+
+        <service android:name="org.telegram.android.ContactsSyncAdapterService" android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_contacts" />
+            <meta-data android:name="android.provider.CONTACTS_STRUCTURE"
+                android:resource="@xml/contacts" />
+        </service>
+
+        <service android:name="org.telegram.android.NotificationsService" android:enabled="true"/>
+        <service android:name="org.telegram.android.NotificationRepeat" android:exported="false"/>
+        <service android:name="org.telegram.android.NotificationDelay" android:exported="false"/>
+        <service android:name="org.telegram.android.VideoEncodingService" android:enabled="true"/>
+
+        <receiver android:name="org.telegram.android.AppStartReceiver" android:enabled="true">
+            <intent-filter>
+                <action android:name="org.telegram.start" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="org.telegram.android.WearReplyReceiver" android:enabled="true"/>
+
+        <uses-library android:name="com.sec.android.app.multiwindow" android:required="false" />
+        <meta-data android:name="com.sec.android.support.multiwindow" android:value="true" />
+        <meta-data android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W" android:value="632dp" />
+        <meta-data android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H" android:value="598dp" />
+        <meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W" android:value="632dp" />
+        <meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H" android:value="598dp" />
     </application>
 
 </manifest>

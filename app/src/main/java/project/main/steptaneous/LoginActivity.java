@@ -391,8 +391,7 @@ public class LoginActivity extends BaseFragment {
 
     public void needFinishActivity() {
         clearCurrentState();
-        // TODO: CHECK THE LINE BELOW, COMMENTED BY LUIZ
-        //presentFragment(new MessagesActivity(null), true);
+        startActivity(new MainActivity());
         NotificationCenter.getInstance().postNotificationName(NotificationCenter.mainUserInfoChanged);
     }
 
@@ -421,7 +420,7 @@ public class LoginActivity extends BaseFragment {
             countryButton = new TextView(context);
             countryButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             countryButton.setPadding(AndroidUtilities.dp(12), AndroidUtilities.dp(10), AndroidUtilities.dp(12), 0);
-            countryButton.setTextColor(0xff212121);
+            countryButton.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_red));
             countryButton.setMaxLines(1);
             countryButton.setSingleLine(true);
             countryButton.setEllipsize(TextUtils.TruncateAt.END);
@@ -450,7 +449,7 @@ public class LoginActivity extends BaseFragment {
 
             View view = new View(context);
             view.setPadding(AndroidUtilities.dp(12), 0, AndroidUtilities.dp(12), 0);
-            view.setBackgroundColor(0xffdbdbdb);
+            view.setBackgroundColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_grey));
             addView(view);
             layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
             layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -471,7 +470,7 @@ public class LoginActivity extends BaseFragment {
 
             TextView textView = new TextView(context);
             textView.setText("+");
-            textView.setTextColor(0xff212121);
+            textView.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
             textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             linearLayout.addView(textView);
             layoutParams = (LinearLayout.LayoutParams) textView.getLayoutParams();
@@ -481,7 +480,7 @@ public class LoginActivity extends BaseFragment {
 
             codeField = new EditText(context);
             codeField.setInputType(InputType.TYPE_CLASS_PHONE);
-            codeField.setTextColor(0xff212121);
+            codeField.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
             AndroidUtilities.clearCursorDrawable(codeField);
             codeField.setPadding(AndroidUtilities.dp(10), 0, 0, 0);
             codeField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
@@ -556,8 +555,8 @@ public class LoginActivity extends BaseFragment {
 
             phoneField = new EditText(context);
             phoneField.setInputType(InputType.TYPE_CLASS_PHONE);
-            phoneField.setTextColor(0xff212121);
-            phoneField.setHintTextColor(0xff979797);
+            phoneField.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
+            phoneField.setHintTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_light_grey));
             phoneField.setPadding(0, 0, 0, 0);
             AndroidUtilities.clearCursorDrawable(phoneField);
             phoneField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
@@ -629,7 +628,7 @@ public class LoginActivity extends BaseFragment {
 
             textView = new TextView(context);
             textView.setText(LocaleController.getString("ChangePhoneHelp", R.string.ChangePhoneHelp));
-            textView.setTextColor(0xff757575);
+            textView.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             textView.setGravity(Gravity.LEFT);
             textView.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
@@ -894,7 +893,7 @@ public class LoginActivity extends BaseFragment {
             setOrientation(VERTICAL);
 
             confirmTextView = new TextView(context);
-            confirmTextView.setTextColor(0xff757575);
+            confirmTextView.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             confirmTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             confirmTextView.setGravity(Gravity.LEFT);
             confirmTextView.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
@@ -906,10 +905,10 @@ public class LoginActivity extends BaseFragment {
             confirmTextView.setLayoutParams(layoutParams);
 
             codeField = new EditText(context);
-            codeField.setTextColor(0xff212121);
+            codeField.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
             codeField.setHint(LocaleController.getString("Code", R.string.Code));
             AndroidUtilities.clearCursorDrawable(codeField);
-            codeField.setHintTextColor(0xff979797);
+            codeField.setHintTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             codeField.setImeOptions(EditorInfo.IME_ACTION_NEXT | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
             codeField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             codeField.setInputType(InputType.TYPE_CLASS_PHONE);
@@ -935,7 +934,7 @@ public class LoginActivity extends BaseFragment {
 
             timeText = new TextView(context);
             timeText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-            timeText.setTextColor(0xff757575);
+            timeText.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             timeText.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
             timeText.setGravity(Gravity.LEFT);
             addView(timeText);
@@ -951,7 +950,7 @@ public class LoginActivity extends BaseFragment {
             problemText.setVisibility(time < 1000 ? VISIBLE : GONE);
             problemText.setGravity(Gravity.LEFT);
             problemText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-            problemText.setTextColor(0xff4d83b3);
+            problemText.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_red));
             problemText.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
             problemText.setPadding(0, AndroidUtilities.dp(2), 0, AndroidUtilities.dp(12));
             addView(problemText);
@@ -990,7 +989,7 @@ public class LoginActivity extends BaseFragment {
 
             TextView wrongNumber = new TextView(context);
             wrongNumber.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
-            wrongNumber.setTextColor(0xff4d83b3);
+            wrongNumber.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_red));
             wrongNumber.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             wrongNumber.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
             wrongNumber.setPadding(0, AndroidUtilities.dp(24), 0, 0);
@@ -1370,7 +1369,7 @@ public class LoginActivity extends BaseFragment {
             setOrientation(VERTICAL);
 
             confirmTextView = new TextView(context);
-            confirmTextView.setTextColor(0xff757575);
+            confirmTextView.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             confirmTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             confirmTextView.setGravity(Gravity.LEFT);
             confirmTextView.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
@@ -1383,9 +1382,9 @@ public class LoginActivity extends BaseFragment {
             confirmTextView.setLayoutParams(layoutParams);
 
             codeField = new EditText(context);
-            codeField.setTextColor(0xff212121);
+            codeField.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
             AndroidUtilities.clearCursorDrawable(codeField);
-            codeField.setHintTextColor(0xff979797);
+            codeField.setHintTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             codeField.setHint(LocaleController.getString("LoginPassword", R.string.LoginPassword));
             codeField.setImeOptions(EditorInfo.IME_ACTION_NEXT | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
             codeField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
@@ -1414,7 +1413,7 @@ public class LoginActivity extends BaseFragment {
 
             TextView cancelButton = new TextView(context);
             cancelButton.setGravity(Gravity.LEFT | Gravity.TOP);
-            cancelButton.setTextColor(0xff4d83b3);
+            cancelButton.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_red));
             cancelButton.setText(LocaleController.getString("ForgotPassword", R.string.ForgotPassword));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             cancelButton.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
@@ -1485,7 +1484,7 @@ public class LoginActivity extends BaseFragment {
 
             resetAccountButton = new TextView(context);
             resetAccountButton.setGravity(Gravity.LEFT | Gravity.TOP);
-            resetAccountButton.setTextColor(0xffff6666);
+            resetAccountButton.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_telegram_light_red));
             resetAccountButton.setVisibility(GONE);
             resetAccountButton.setText(LocaleController.getString("ResetMyAccount", R.string.ResetMyAccount));
             resetAccountButton.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
@@ -1541,7 +1540,7 @@ public class LoginActivity extends BaseFragment {
             resetAccountText = new TextView(context);
             resetAccountText.setGravity(Gravity.LEFT | Gravity.TOP);
             resetAccountText.setVisibility(GONE);
-            resetAccountText.setTextColor(0xff757575);
+            resetAccountText.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             resetAccountText.setText(LocaleController.getString("ResetMyAccountText", R.string.ResetMyAccountText));
             resetAccountText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             resetAccountText.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
@@ -1745,7 +1744,7 @@ public class LoginActivity extends BaseFragment {
             setOrientation(VERTICAL);
 
             confirmTextView = new TextView(context);
-            confirmTextView.setTextColor(0xff757575);
+            confirmTextView.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             confirmTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             confirmTextView.setGravity(Gravity.LEFT);
             confirmTextView.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
@@ -1758,9 +1757,9 @@ public class LoginActivity extends BaseFragment {
             confirmTextView.setLayoutParams(layoutParams);
 
             codeField = new EditText(context);
-            codeField.setTextColor(0xff212121);
+            codeField.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
             AndroidUtilities.clearCursorDrawable(codeField);
-            codeField.setHintTextColor(0xff979797);
+            codeField.setHintTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             codeField.setHint(LocaleController.getString("PasswordCode", R.string.PasswordCode));
             codeField.setImeOptions(EditorInfo.IME_ACTION_NEXT | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
             codeField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
@@ -1789,7 +1788,7 @@ public class LoginActivity extends BaseFragment {
 
             cancelButton = new TextView(context);
             cancelButton.setGravity(Gravity.LEFT | Gravity.BOTTOM);
-            cancelButton.setTextColor(0xff4d83b3);
+            cancelButton.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_red));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             cancelButton.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
             cancelButton.setPadding(0, AndroidUtilities.dp(14), 0, 0);
@@ -1992,7 +1991,7 @@ public class LoginActivity extends BaseFragment {
 
             TextView textView = new TextView(context);
             textView.setText(LocaleController.getString("RegisterText", R.string.RegisterText));
-            textView.setTextColor(0xff757575);
+            textView.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
             textView.setGravity(Gravity.LEFT);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             addView(textView);
@@ -2004,8 +2003,8 @@ public class LoginActivity extends BaseFragment {
             textView.setLayoutParams(layoutParams);
 
             firstNameField = new EditText(context);
-            firstNameField.setHintTextColor(0xff979797);
-            firstNameField.setTextColor(0xff212121);
+            firstNameField.setHintTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
+            firstNameField.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
             AndroidUtilities.clearCursorDrawable(firstNameField);
             firstNameField.setHint(LocaleController.getString("FirstName", R.string.FirstName));
             firstNameField.setImeOptions(EditorInfo.IME_ACTION_NEXT | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
@@ -2031,8 +2030,8 @@ public class LoginActivity extends BaseFragment {
 
             lastNameField = new EditText(context);
             lastNameField.setHint(LocaleController.getString("LastName", R.string.LastName));
-            lastNameField.setHintTextColor(0xff979797);
-            lastNameField.setTextColor(0xff212121);
+            lastNameField.setHintTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_half_dark_grey));
+            lastNameField.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
             AndroidUtilities.clearCursorDrawable(lastNameField);
             lastNameField.setImeOptions(EditorInfo.IME_ACTION_NEXT | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
             lastNameField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
@@ -2056,7 +2055,7 @@ public class LoginActivity extends BaseFragment {
             TextView wrongNumber = new TextView(context);
             wrongNumber.setText(LocaleController.getString("CancelRegistration", R.string.CancelRegistration));
             wrongNumber.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
-            wrongNumber.setTextColor(0xff4d83b3);
+            wrongNumber.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_red));
             wrongNumber.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             wrongNumber.setLineSpacing(AndroidUtilities.dp(2), 1.0f);
             wrongNumber.setPadding(0, AndroidUtilities.dp(24), 0, 0);

@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 
 import org.telegram.android.AndroidUtilities;
 import org.telegram.android.NotificationCenter;
+import org.telegram.messenger.ApplicationLoader;
 import org.telegram.ui.AnimationCompat.AnimatorListenerAdapterProxy;
 import org.telegram.ui.AnimationCompat.AnimatorSetProxy;
 import org.telegram.ui.AnimationCompat.ObjectAnimatorProxy;
@@ -1018,6 +1019,16 @@ public class ActionBarLayout extends FrameLayout {
                 parentActivity.startActivityForResult(intent, requestCode);
             }
         }
+    }
+
+    public <T>void startActivity (final T classForIntent) {
+        if (parentActivity == null) {
+            return;
+        }
+
+        Intent i = new Intent(ApplicationLoader.applicationContext, classForIntent.getClass());
+        parentActivity.startActivity(i);
+        parentActivity.finish();
     }
 
     public void setUseAlphaAnimations(boolean value) {

@@ -1193,7 +1193,7 @@ public class NotificationsController {
             public void run() {
                 try {
                     ContentValues cv = new ContentValues();
-                    cv.put("tag", "org.telegram.messenger/org.telegram.ui.LaunchActivity");
+                    cv.put("tag", "project.main.steptaneous/project.main.steptaneous.MainActivity");
                     cv.put("count", count);
                     context.getContentResolver().insert(Uri.parse("content://com.teslacoilsw.notifier/unread_count"), cv);
                 } catch (Throwable e) {
