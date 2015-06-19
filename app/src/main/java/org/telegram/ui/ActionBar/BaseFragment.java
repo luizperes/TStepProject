@@ -180,7 +180,7 @@ public class BaseFragment {
         }
     }
 
-    public <T>void startActivity(final T classForIntent)
+    public void startActivity(Class classForIntent)
     {
         if (parentLayout != null) {
             parentLayout.startActivity(classForIntent);

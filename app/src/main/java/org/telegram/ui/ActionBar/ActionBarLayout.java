@@ -1021,12 +1021,12 @@ public class ActionBarLayout extends FrameLayout {
         }
     }
 
-    public <T>void startActivity (final T classForIntent) {
+    public void startActivity (Class classForIntent) {
         if (parentActivity == null) {
             return;
         }
 
-        Intent i = new Intent(ApplicationLoader.applicationContext, classForIntent.getClass());
+        Intent i = new Intent(ApplicationLoader.applicationContext, classForIntent);
         parentActivity.startActivity(i);
         parentActivity.finish();
     }
