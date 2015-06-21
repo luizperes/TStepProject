@@ -20,13 +20,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.UserConfig;
@@ -168,6 +163,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            if (getPageTitle(position).toString().toUpperCase().equals(getString(R.string.title_section3).toUpperCase()))
+            {
+                return new MessagesFragment();
+            }
+
             return PlaceholderFragment.newInstance(position + 1);
         }
 

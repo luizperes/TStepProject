@@ -2,6 +2,7 @@ package project.main.steptaneous;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -52,6 +53,7 @@ public class LoginContainerActivity extends Activity implements ActionBarLayout.
     private void initVars(Bundle savedInstanceState)
     {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setBackgroundDrawableResource(R.drawable.transparent);
 
         actionBarLayout = new ActionBarLayout(this);
