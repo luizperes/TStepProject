@@ -22,5 +22,7 @@ Translations:  https://www.transifex.com/projects/p/telegram/
 
 ##Creating your Telegram Application
 
+Please visit https://core.telegram.org/api/obtaining_api_id
+
 ### LICENSE
 Lastly, but not least, TStepProject extends Telegram in its license using the [GNU GPL v. 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) or later, so please be aware of that, regarding copying, modifying and (re)destributing the application.
