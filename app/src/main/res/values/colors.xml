@@ -12,9 +12,11 @@
     <color name="step_half_dark_grey">#FF757575</color>
     <color name="step_telegram_light_red">#FF6666</color>
 
+    <color name="divider">@color/step_green</color>
+
     <!-- Telegram Colors -->
     <color name="background_tab_pressed">#6633B5E5</color>
-    <color name="divider">#dcdcdc</color>
+    <!--color name="divider">#dcdcdc</color-->
     <color name="grey_listview">#0f000000</color>
     <color name="grey2_listview">#2f000000</color>
 </resources>
