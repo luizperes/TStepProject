@@ -15,4 +15,6 @@
     <!-- Telegram Colors -->
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="divider">#dcdcdc</color>
+    <color name="grey_listview">#0f000000</color>
+    <color name="grey2_listview">#2f000000</color>
 </resources>

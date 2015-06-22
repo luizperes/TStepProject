@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.view.View;
 
 import org.telegram.android.AndroidUtilities;
+import org.telegram.android.LocaleController;
 import org.telegram.messenger.ApplicationLoader;
 
 
@@ -90,7 +91,7 @@ public class IntroActivity extends Activity
 
         viewPager = (ViewPager)findViewById(R.id.intro_view_pager);
         TextView startMessagingButton = (TextView) findViewById(R.id.start_stepss);
-        startMessagingButton.setText(getString(R.string.start_stepss).toUpperCase());
+        startMessagingButton.setText(LocaleController.getString("start_stepss", R.string.start_stepss).toUpperCase());
         if (Build.VERSION.SDK_INT >= 21) {
             StateListAnimator animator = new StateListAnimator();
             animator.addState(new int[] {}, ObjectAnimator.ofFloat(startMessagingButton, "translationZ", AndroidUtilities.dp(4), AndroidUtilities.dp(2)).setDuration(200));
