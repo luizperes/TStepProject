@@ -68,10 +68,12 @@ public class AndroidUtilities
     public static Point displaySize = new Point();
     public static int statusBarHeight = 0;
     private static int prevOrientation = -10;
+    public static int leftBaseline;
 
     static
     {
         density = ApplicationLoader.applicationContext.getResources().getDisplayMetrics().density;
+        leftBaseline = isTablet() ? 80 : 72;
         checkDisplaySize();
     }
 

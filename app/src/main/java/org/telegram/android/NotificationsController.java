@@ -511,7 +511,7 @@ public class NotificationsController {
                     .setContentIntent(contentIntent)
                     .setGroup("messages")
                     .setGroupSummary(true)
-                    .setColor(0xff2ca5e0);
+                    .setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_red));
 
             if (priority == 0) {
                 mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
