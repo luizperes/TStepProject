@@ -13,6 +13,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import org.telegram.android.AndroidUtilities;
+import org.telegram.messenger.ApplicationLoader;
+
+import project.main.steptaneous.R;
 
 public class DividerCell extends BaseCell {
 
@@ -22,7 +25,7 @@ public class DividerCell extends BaseCell {
         super(context);
         if (paint == null) {
             paint = new Paint();
-            paint.setColor(0xffd9d9d9);
+            paint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_green));
             paint.setStrokeWidth(1);
         }
     }

@@ -10,7 +10,14 @@
     <color name="step_light_grey">#FFDBDBDB</color>
     <color name="step_half_light_grey">#FF979797</color>
     <color name="step_half_dark_grey">#FF757575</color>
+
     <color name="step_telegram_light_red">#FF6666</color>
+    <color name="step_telegram_green">#FF00A60E</color>
+    <color name="step_telegram_blue">#FF4D83B3</color>
+    <color name="step_telegram_dark_grey">#FF8F8F8F</color>
+    <color name="step_telegram_lighter_dark_grey">#ff999999</color>
+
+    <color name="white">@android:color/white</color>
 
     <color name="divider">@color/step_green</color>
 

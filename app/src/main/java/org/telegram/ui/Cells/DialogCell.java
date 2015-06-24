@@ -117,38 +117,38 @@ public class DialogCell extends BaseCell {
         if (namePaint == null) {
             namePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             namePaint.setTextSize(AndroidUtilities.dp(17));
-            namePaint.setColor(0xff212121);
+            namePaint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
             namePaint.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
 
             nameEncryptedPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             nameEncryptedPaint.setTextSize(AndroidUtilities.dp(17));
-            nameEncryptedPaint.setColor(0xff00a60e);
+            nameEncryptedPaint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_telegram_green));
             nameEncryptedPaint.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
 
             nameUnknownPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             nameUnknownPaint.setTextSize(AndroidUtilities.dp(17));
-            nameUnknownPaint.setColor(0xff4d83b3);
+            nameUnknownPaint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_telegram_blue));
             nameUnknownPaint.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
 
             messagePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             messagePaint.setTextSize(AndroidUtilities.dp(16));
-            messagePaint.setColor(0xff8f8f8f);
-            messagePaint.linkColor = 0xff8f8f8f;
+            messagePaint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_telegram_dark_grey));
+            messagePaint.linkColor = ApplicationLoader.applicationContext.getResources().getColor(R.color.step_telegram_dark_grey);
 
             linePaint = new Paint();
-            linePaint.setColor(0xffdcdcdc);
+            linePaint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.divider));
 
             messagePrintingPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             messagePrintingPaint.setTextSize(AndroidUtilities.dp(16));
-            messagePrintingPaint.setColor(0xff4d83b3);
+            messagePrintingPaint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_telegram_blue));
 
             timePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             timePaint.setTextSize(AndroidUtilities.dp(13));
-            timePaint.setColor(0xff999999);
+            timePaint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_telegram_lighter_dark_grey));
 
             countPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             countPaint.setTextSize(AndroidUtilities.dp(13));
-            countPaint.setColor(0xffffffff);
+            countPaint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.white));
             countPaint.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
 
             lockDrawable = getResources().getDrawable(R.mipmap.list_secret);

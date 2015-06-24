@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.telegram.android.LocaleController;
+import org.telegram.android.NotificationCenter;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.UserConfig;
 
@@ -72,6 +73,65 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         {
             super.onCreate(savedInstanceState);
             setElementsActivity();
+            handleIntent(theIntent);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent)
+    {
+        if (UserConfig.isClientActivated() && intent != null && intent.getAction() != null)
+        {
+            Integer push_user_id = 0;
+            Integer push_chat_id = 0;
+            Integer push_enc_id = 0;
+            boolean showDialogsList = false;
+
+            if (intent.getAction().startsWith("com.tmessages.openchat"))
+            {
+                int chatId = intent.getIntExtra("chatId", 0);
+                int userId = intent.getIntExtra("userId", 0);
+                int encId = intent.getIntExtra("encId", 0);
+                if (chatId != 0) {
+                    NotificationCenter.getInstance().postNotificationName(NotificationCenter.closeChats);
+                    push_chat_id = chatId;
+                } else if (userId != 0) {
+                    NotificationCenter.getInstance().postNotificationName(NotificationCenter.closeChats);
+                    push_user_id = userId;
+                } else if (encId != 0) {
+                    NotificationCenter.getInstance().postNotificationName(NotificationCenter.closeChats);
+                    push_enc_id = encId;
+                } else {
+                    showDialogsList = true;
+                }
+
+                if (push_user_id != 0) {
+                    Bundle args = new Bundle();
+                    args.putInt("user_id", push_user_id);
+                    // TODO Luiz, pay attention to that in the future.
+                    //ChatActivity fragment = new ChatActivity(args);
+                } else if (push_chat_id != 0) {
+                    Bundle args = new Bundle();
+                    args.putInt("chat_id", push_chat_id);
+                    // TODO Luiz, pay attention to that in the future.
+                    //ChatActivity fragment = new ChatActivity(args);
+                } else if (push_enc_id != 0) {
+                    Bundle args = new Bundle();
+                    args.putInt("enc_id", push_enc_id);
+                    // TODO Luiz, pay attention to that in the future.
+                    //ChatActivity fragment = new ChatActivity(args);
+                } else if (showDialogsList) {
+                    final ActionBar actionBar = getSupportActionBar();
+                    actionBar.setSelectedNavigationItem(mSectionsPagerAdapter.getPositionElements(MessagesFragment.class));
+                }
+
+                intent.setAction(null);
+            }
         }
     }
 
@@ -170,6 +230,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
 
             return PlaceholderFragment.newInstance(position + 1);
+        }
+
+        public int getPositionElements(Class theClass)
+        {
+            if (theClass == MessagesFragment.class)
+                return 2;
+            else
+                return -1;
         }
 
         @Override
