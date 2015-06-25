@@ -58,11 +58,8 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
     private boolean serverOnly = false;
 
     private static boolean dialogsLoaded = false;
-    private boolean searching = false;
-    private boolean searchWas = false;
     private boolean onlySelect = false;
     private long selectedDialog;
-    private String searchString;
 
     private ImageView floatingButton;
     private View progressView;
@@ -98,21 +95,18 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
             selectAlertStringGroup = arguments.getString("selectAlertStringGroup");
         }
 
-        if (searchString == null) {
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.dialogsNeedReload);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.emojiDidLoaded);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.updateInterfaces);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.encryptedChatUpdated);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.contactsDidLoaded);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.appDidLogout);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.openedChatChanged);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.notificationsSettingsUpdated);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.messageReceivedByAck);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.messageReceivedByServer);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.messageSendError);
-            NotificationCenter.getInstance().addObserver(this, NotificationCenter.didSetPasscode);
-        }
-
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.dialogsNeedReload);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.emojiDidLoaded);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.updateInterfaces);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.encryptedChatUpdated);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.contactsDidLoaded);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.appDidLogout);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.openedChatChanged);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.notificationsSettingsUpdated);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.messageReceivedByAck);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.messageReceivedByServer);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.messageSendError);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.didSetPasscode);
 
         if (!dialogsLoaded) {
             MessagesController.getInstance().loadDialogs(0, 0, 100, true);
@@ -130,20 +124,20 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
 
     private void destroyVars()
     {
-        if (searchString == null) {
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.dialogsNeedReload);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.emojiDidLoaded);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.updateInterfaces);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.encryptedChatUpdated);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.contactsDidLoaded);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.appDidLogout);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.openedChatChanged);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.notificationsSettingsUpdated);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.messageReceivedByAck);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.messageReceivedByServer);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.messageSendError);
-            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.didSetPasscode);
-        }
+
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.dialogsNeedReload);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.emojiDidLoaded);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.updateInterfaces);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.encryptedChatUpdated);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.contactsDidLoaded);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.appDidLogout);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.openedChatChanged);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.notificationsSettingsUpdated);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.messageReceivedByAck);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.messageReceivedByServer);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.messageSendError);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.didSetPasscode);
+
         delegate = null;
     }
 
@@ -152,11 +146,9 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.messages_list, container, false);
 
-        if (searchString == null) {
-            dialogsAdapter = new DialogsAdapter(inflater.getContext(), serverOnly);
-            if (AndroidUtilities.isTablet() && openedDialogId != 0) {
-                dialogsAdapter.setOpenedDialogId(openedDialogId);
-            }
+        dialogsAdapter = new DialogsAdapter(inflater.getContext(), serverOnly);
+        if (AndroidUtilities.isTablet() && openedDialogId != 0) {
+            dialogsAdapter.setOpenedDialogId(openedDialogId);
         }
 
         messagesListView = (ListView) rootView.findViewById(R.id.messages_list_view);
@@ -285,7 +277,7 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
         messagesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (onlySelect || searching && searchWas || getActivity() == null) {
+                if (onlySelect || getActivity() == null) {
                     return false;
                 }
                 TLRPC.TL_dialog dialog;
@@ -354,16 +346,13 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
         messagesListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
-                if (i == SCROLL_STATE_TOUCH_SCROLL && searching && searchWas) {
+                if (i == SCROLL_STATE_TOUCH_SCROLL) {
                     AndroidUtilities.hideKeyboard(getActivity().getCurrentFocus());
                 }
             }
 
             @Override
             public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (searching && searchWas) {
-                    return;
-                }
                 if (visibleItemCount > 0) {
                     if (absListView.getLastVisiblePosition() == MessagesController.getInstance().dialogs.size() && !serverOnly || absListView.getLastVisiblePosition() == MessagesController.getInstance().dialogsServerOnly.size() && serverOnly) {
                         MessagesController.getInstance().loadDialogs(MessagesController.getInstance().dialogs.size(), MessagesController.getInstance().dialogsServerOnly.size(), 100, true);
@@ -414,12 +403,10 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
                     if (MessagesController.getInstance().loadingDialogs && MessagesController.getInstance().dialogs.isEmpty()) {
                         emptyView.setVisibility(View.INVISIBLE);
                         messagesListView.setEmptyView(progressView);
-                    } else {
-                        if (searching && searchWas) {
-                            emptyView.setVisibility(View.INVISIBLE);
-                        } else {
-                            messagesListView.setEmptyView(emptyView);
-                        }
+                    }
+                    else
+                    {
+                        messagesListView.setEmptyView(emptyView);
                         progressView.setVisibility(View.INVISIBLE);
                     }
                 } catch (Exception e) {

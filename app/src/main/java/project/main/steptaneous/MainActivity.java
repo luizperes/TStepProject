@@ -22,11 +22,16 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
+import org.telegram.android.AndroidUtilities;
 import org.telegram.android.LocaleController;
+import org.telegram.android.MessagesController;
 import org.telegram.android.NotificationCenter;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.UserConfig;
+import org.telegram.ui.AnimationCompat.ViewProxy;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -45,6 +50,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+
+    private boolean searching = false;
+    private boolean searchWas = false;
+    private boolean onlySelect = false;
+    private String searchString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,26 +97,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     {
         if (UserConfig.isClientActivated() && intent != null && intent.getAction() != null)
         {
-            Integer push_user_id = 0;
-            Integer push_chat_id = 0;
-            Integer push_enc_id = 0;
-            boolean showDialogsList = false;
-
             if (intent.getAction().startsWith("com.tmessages.openchat"))
             {
-                int chatId = intent.getIntExtra("chatId", 0);
-                int userId = intent.getIntExtra("userId", 0);
-                int encId = intent.getIntExtra("encId", 0);
-                if (chatId != 0) {
+                Integer push_chat_id = intent.getIntExtra("chatId", 0);
+                Integer push_user_id = intent.getIntExtra("userId", 0);
+                Integer push_enc_id = intent.getIntExtra("encId", 0);
+                boolean showDialogsList = false;
+
+                if (push_chat_id != 0 || push_user_id != 0 || push_enc_id != 0)
+                {
                     NotificationCenter.getInstance().postNotificationName(NotificationCenter.closeChats);
-                    push_chat_id = chatId;
-                } else if (userId != 0) {
-                    NotificationCenter.getInstance().postNotificationName(NotificationCenter.closeChats);
-                    push_user_id = userId;
-                } else if (encId != 0) {
-                    NotificationCenter.getInstance().postNotificationName(NotificationCenter.closeChats);
-                    push_enc_id = encId;
-                } else {
+                }
+                else
+                {
                     showDialogsList = true;
                 }
 
@@ -170,6 +173,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        createSearchBtn(actionBar);
+    }
+
+    private void createSearchBtn(ActionBar actionBar)
+    {
+        searching = false;
+        searchWas = false;
+
+
     }
 
 
