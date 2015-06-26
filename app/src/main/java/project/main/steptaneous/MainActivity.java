@@ -12,6 +12,7 @@ package project.main.steptaneous;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -30,11 +31,13 @@ import org.telegram.android.LocaleController;
 import org.telegram.android.MessagesController;
 import org.telegram.android.NotificationCenter;
 import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.ConnectionsManager;
 import org.telegram.messenger.UserConfig;
+import org.telegram.messenger.Utilities;
 import org.telegram.ui.AnimationCompat.ViewProxy;
 
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
+public class MainActivity extends ActionBarActivity implements ActionBar.TabListener, NotificationCenter.NotificationCenterDelegate {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -55,6 +58,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     private boolean searchWas = false;
     private boolean onlySelect = false;
     private String searchString;
+    private int currentConnectionState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +87,39 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         {
             super.onCreate(savedInstanceState);
             setElementsActivity();
+            setNetworkObserver();
             handleIntent(theIntent);
+        }
+    }
+
+    private void setNetworkObserver()
+    {
+        NotificationCenter.getInstance().postNotificationName(NotificationCenter.closeOtherAppActivities, this);
+        currentConnectionState = ConnectionsManager.getInstance().getConnectionState();
+
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.appDidLogout);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.mainUserInfoChanged);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.closeOtherAppActivities);
+        NotificationCenter.getInstance().addObserver(this, NotificationCenter.didUpdatedConnectionState);
+        if (Build.VERSION.SDK_INT < 14) {
+            NotificationCenter.getInstance().addObserver(this, NotificationCenter.screenStateChanged);
+        } else {
+            NotificationCenter.getInstance().addObserver(this, NotificationCenter.appSwitchedToForeground);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.appDidLogout);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.mainUserInfoChanged);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.closeOtherAppActivities);
+        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.didUpdatedConnectionState);
+        if (Build.VERSION.SDK_INT < 14) {
+            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.screenStateChanged);
+        } else {
+            NotificationCenter.getInstance().removeObserver(this, NotificationCenter.appSwitchedToForeground);
         }
     }
 
@@ -138,6 +174,29 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Utilities.checkForCrashes(this);
+        Utilities.checkForUpdates(this);
+        ApplicationLoader.mainInterfacePaused = false;
+        ConnectionsManager.getInstance().setAppPaused(false, false);
+        updateCurrentConnectionState();
+    }
+
+    private void updateCurrentConnectionState() {
+        String text = null;
+        if (currentConnectionState == 1) {
+            text = LocaleController.getString("WaitingForNetwork", R.string.WaitingForNetwork);
+        } else if (currentConnectionState == 2) {
+            text = LocaleController.getString("Connecting", R.string.Connecting);
+        } else if (currentConnectionState == 3) {
+            text = LocaleController.getString("Updating", R.string.Updating);
+        }
+        getSupportActionBar().setTitle(text);
+    }
+
     private void setElementsActivity() {
         setContentView(R.layout.activity_main);
         // Set up the action bar.
@@ -183,6 +242,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         searchWas = false;
 
 
+
     }
 
 
@@ -221,6 +281,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args)
+    {
+
     }
 
     /**
