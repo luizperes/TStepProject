@@ -32,6 +32,7 @@ import org.telegram.android.MessagesController;
 import org.telegram.android.NotificationCenter;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ConnectionsManager;
+import org.telegram.messenger.FileLog;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
 import org.telegram.ui.AnimationCompat.ViewProxy;
@@ -187,6 +188,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     private void updateCurrentConnectionState() {
         String text = null;
+        if (currentConnectionState == 0)
+        {
+            text = LocaleController.getString("app_name", R.string.app_name);
+        }
         if (currentConnectionState == 1) {
             text = LocaleController.getString("WaitingForNetwork", R.string.WaitingForNetwork);
         } else if (currentConnectionState == 2) {
@@ -286,7 +291,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     public void didReceivedNotification(int id, Object... args)
     {
-
+        if (id == NotificationCenter.didUpdatedConnectionState) {
+            int state = (Integer)args[0];
+            if (currentConnectionState != state) {
+                FileLog.e("tmessages", "switch to state " + state);
+                currentConnectionState = state;
+                updateCurrentConnectionState();
+            }
+        }
     }
 
     /**

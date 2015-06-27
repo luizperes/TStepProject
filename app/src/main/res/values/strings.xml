@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">Stepss</string>
+    <string name="app_account">project.steptaneous.account</string>
+    <string name="app_vendor">vnd.android.cursor.item/vnd.project.steptaneous.android.profile</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

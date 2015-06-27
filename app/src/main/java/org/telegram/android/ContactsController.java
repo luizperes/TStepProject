@@ -203,7 +203,7 @@ public class ContactsController {
 
     public void checkAppAccount() {
         AccountManager am = AccountManager.get(ApplicationLoader.applicationContext);
-        Account[] accounts = am.getAccountsByType("org.telegram.account");
+        Account[] accounts = am.getAccountsByType(ApplicationLoader.applicationContext.getString(R.string.app_account));
         boolean recreateAccount = false;
         if (UserConfig.isClientActivated()) {
             if (accounts.length == 1) {
@@ -228,7 +228,7 @@ public class ContactsController {
             }
             if (UserConfig.isClientActivated()) {
                 try {
-                    currentAccount = new Account(UserConfig.getCurrentUser().phone, "org.telegram.account");
+                    currentAccount = new Account(UserConfig.getCurrentUser().phone, ApplicationLoader.applicationContext.getString(R.string.app_account));
                     am.addAccountExplicitly(currentAccount, "", null);
                 } catch (Exception e) {
                     FileLog.e("tmessages", e);
@@ -240,7 +240,7 @@ public class ContactsController {
     public void deleteAllAppAccounts() {
         try {
             AccountManager am = AccountManager.get(ApplicationLoader.applicationContext);
-            Account[] accounts = am.getAccountsByType("org.telegram.account");
+            Account[] accounts = am.getAccountsByType(ApplicationLoader.applicationContext.getString(R.string.app_account));
             for (Account c : accounts) {
                 am.removeAccount(c, null, null);
             }
@@ -1463,9 +1463,9 @@ public class ContactsController {
 
         builder = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI);
         builder.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0);
-        builder.withValue(ContactsContract.Data.MIMETYPE, "vnd.android.cursor.item/vnd.org.telegram.messenger.android.profile");
+        builder.withValue(ContactsContract.Data.MIMETYPE, ApplicationLoader.applicationContext.getString(R.string.app_vendor));
         builder.withValue(ContactsContract.Data.DATA1, "+" + user.phone);
-        builder.withValue(ContactsContract.Data.DATA2, "Telegram Profile");
+        builder.withValue(ContactsContract.Data.DATA2, ApplicationLoader.applicationContext.getString(R.string.app_name) + " Profile");
         builder.withValue(ContactsContract.Data.DATA3, "+" + user.phone);
         builder.withValue(ContactsContract.Data.DATA4, user.id);
         query.add(builder.build());
