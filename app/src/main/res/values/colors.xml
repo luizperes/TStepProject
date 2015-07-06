@@ -26,4 +26,6 @@
     <!--color name="divider">#dcdcdc</color-->
     <color name="grey_listview">#0f000000</color>
     <color name="grey2_listview">#2f000000</color>
+    <color name="tel_dark_grey">#ff808080</color>
+    <color name="tel_light_grey">#ffd9d9d9</color>
 </resources>

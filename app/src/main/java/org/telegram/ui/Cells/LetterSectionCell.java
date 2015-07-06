@@ -18,6 +18,8 @@ import android.widget.TextView;
 import org.telegram.android.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 
+import project.main.steptaneous.R;
+
 public class LetterSectionCell extends FrameLayout {
 
     private TextView textView;
@@ -29,7 +31,7 @@ public class LetterSectionCell extends FrameLayout {
         textView = new TextView(getContext());
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
         textView.setTypeface(AndroidUtilities.getTypeface(ApplicationLoader.applicationContext, "fonts/rmedium.ttf"));
-        textView.setTextColor(0xff808080);
+        textView.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.tel_dark_grey));
         textView.setGravity(Gravity.CENTER);
         addView(textView);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams)textView.getLayoutParams();

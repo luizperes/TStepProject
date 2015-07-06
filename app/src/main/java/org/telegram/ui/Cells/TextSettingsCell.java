@@ -20,6 +20,9 @@ import android.widget.TextView;
 
 import org.telegram.android.AndroidUtilities;
 import org.telegram.android.LocaleController;
+import org.telegram.messenger.ApplicationLoader;
+
+import project.main.steptaneous.R;
 
 public class TextSettingsCell extends FrameLayout {
 
@@ -34,12 +37,12 @@ public class TextSettingsCell extends FrameLayout {
 
         if (paint == null) {
             paint = new Paint();
-            paint.setColor(0xffd9d9d9);
+            paint.setColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.tel_light_grey));
             paint.setStrokeWidth(1);
         }
 
         textView = new TextView(context);
-        textView.setTextColor(0xff212121);
+        textView.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_dark_color));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
         textView.setLines(1);
         textView.setMaxLines(1);
@@ -56,7 +59,7 @@ public class TextSettingsCell extends FrameLayout {
         textView.setLayoutParams(layoutParams);
 
         valueTextView = new TextView(context);
-        valueTextView.setTextColor(0xff2f8cc9);
+        valueTextView.setTextColor(ApplicationLoader.applicationContext.getResources().getColor(R.color.step_light_red));
         valueTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
         valueTextView.setLines(1);
         valueTextView.setMaxLines(1);
