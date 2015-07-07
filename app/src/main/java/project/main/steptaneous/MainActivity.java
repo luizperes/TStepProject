@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import android.content.Intent;
 import android.os.Build;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -21,45 +22,35 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 
-import org.telegram.android.AndroidUtilities;
 import org.telegram.android.LocaleController;
-import org.telegram.android.MessagesController;
 import org.telegram.android.NotificationCenter;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ConnectionsManager;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
-import org.telegram.ui.AnimationCompat.ViewProxy;
+import org.telegram.ui.Adapters.DialogsSearchAdapter;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener, NotificationCenter.NotificationCenterDelegate {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     ViewPager mViewPager;
-
-    private boolean searching = false;
-    private boolean searchWas = false;
-    private boolean onlySelect = false;
-    private String searchString;
+    private DialogsSearchAdapter dialogsSearchAdapter;
+    private ListView searchListView;
+    private View searchEmptyView;
+    private View progressView;
+    private View emptyView;
     private int currentConnectionState;
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +196,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     private void setElementsActivity() {
         setContentView(R.layout.activity_main);
         // Set up the action bar.
-        final ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Create the adapter that will return a fragment for each of the three
@@ -237,25 +228,118 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-
-        createSearchBtn(actionBar);
     }
-
-    private void createSearchBtn(ActionBar actionBar)
-    {
-        searching = false;
-        searchWas = false;
-
-
-
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        createSearchBtn(searchItem);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void createSearchBtn(MenuItem item)
+    {
+        searchListView = (ListView) findViewById(R.id.search_list_view);
+        progressView = findViewById(R.id.search_progress_layout);
+
+        searchEmptyView = findViewById(R.id.search_empty_view);
+        searchEmptyView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+        emptyView = findViewById(R.id.search_empty_view);
+        emptyView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+        dialogsSearchAdapter = new DialogsSearchAdapter(getBaseContext(), 2);
+        dialogsSearchAdapter.setDelegate(new DialogsSearchAdapter.MessagesActivitySearchAdapterDelegate() {
+            @Override
+            public void searchStateChanged(boolean search) {
+                if (searchListView != null) {
+                    progressView.setVisibility(search ? View.VISIBLE : View.INVISIBLE);
+                    searchEmptyView.setVisibility(search ? View.INVISIBLE : View.VISIBLE);
+                    searchListView.setEmptyView(search ? progressView : searchEmptyView);
+                }
+            }
+        });
+
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                dialogsSearchAdapter.notifyDataSetChanged();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s.length() != 0) {
+
+                    if (searchEmptyView != null && searchListView.getEmptyView() == emptyView) {
+                        searchListView.setEmptyView(searchEmptyView);
+                        emptyView.setVisibility(View.INVISIBLE);
+                        progressView.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                if (dialogsSearchAdapter != null) {
+                    // This statement will stay here to remind us in the future, if we need it.
+                    boolean serverOnly = false;
+                    dialogsSearchAdapter.searchDialogs(s, serverOnly);
+                }
+
+                return true;
+            }
+        });
+
+        final ActionBar.TabListener tabListener = this;
+
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                if (dialogsSearchAdapter != null) {
+                    searchListView.setAdapter(dialogsSearchAdapter);
+                    dialogsSearchAdapter.notifyDataSetChanged();
+                }
+
+                mViewPager.setVisibility(View.GONE);
+                actionBar.removeAllTabs();
+
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item)
+            {
+                if (dialogsSearchAdapter != null) {
+                    dialogsSearchAdapter.searchDialogs(null, false);
+                    dialogsSearchAdapter.notifyDataSetChanged();
+                }
+
+                mViewPager.setVisibility(View.VISIBLE);
+                for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+                    actionBar.addTab(
+                            actionBar.newTab()
+                                    .setText(mSectionsPagerAdapter.getPageTitle(i))
+                                    .setTabListener(tabListener));
+                }
+
+                return true;
+            }
+        });
+
     }
 
     @Override

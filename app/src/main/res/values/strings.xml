@@ -13,6 +13,7 @@
     <string name="title_section3">Chats</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_intro">IntroActivity</string>
+    <string name="action_search">Search</string>
     <!--Intro view-->
     <string name="Page1Title">Stepss</string>
     <string name="Page2Title">Find Friends</string>
