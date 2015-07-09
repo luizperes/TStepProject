@@ -365,18 +365,22 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
                     if (topChild != null) {
                         firstViewTop = topChild.getTop();
                     }
-                    boolean goingDown;
+                    //boolean goingDown;
                     boolean changed = true;
                     if (prevPosition == firstVisibleItem) {
                         final int topDelta = prevTop - firstViewTop;
-                        goingDown = firstViewTop < prevTop;
+                        //goingDown = firstViewTop < prevTop;
                         changed = Math.abs(topDelta) > 1;
-                    } else {
+                    }
+
+                    // The floating button does not disappear anymore
+
+                    /*else {
                         goingDown = firstVisibleItem > prevPosition;
                     }
                     if (changed && scrollUpdated) {
-                        hideFloatingButton(goingDown);
-                    }
+                        //hideFloatingButton(goingDown);
+                    }*/
                     prevPosition = firstVisibleItem;
                     prevTop = firstViewTop;
                     scrollUpdated = true;
@@ -399,7 +403,8 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
                 }
             }
             if (messagesListView != null) {
-                try {
+                try
+                {
                     if (MessagesController.getInstance().loadingDialogs && MessagesController.getInstance().dialogs.isEmpty()) {
                         emptyView.setVisibility(View.INVISIBLE);
                         messagesListView.setEmptyView(progressView);

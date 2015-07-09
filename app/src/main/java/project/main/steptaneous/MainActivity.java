@@ -28,7 +28,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.telegram.android.LocaleController;
 import org.telegram.android.NotificationCenter;
@@ -48,9 +50,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     private ListView searchListView;
     private View searchEmptyView;
     private View progressView;
-    private View emptyView;
     private int currentConnectionState;
     private ActionBar actionBar;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,21 +256,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
         });
 
-        emptyView = findViewById(R.id.search_empty_view);
-        emptyView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        textView = (TextView) findViewById(R.id.search_empty_text);
+        textView.setText(LocaleController.getString("NoResult", R.string.NoResult));
 
         dialogsSearchAdapter = new DialogsSearchAdapter(getBaseContext(), 2);
         dialogsSearchAdapter.setDelegate(new DialogsSearchAdapter.MessagesActivitySearchAdapterDelegate() {
             @Override
             public void searchStateChanged(boolean search) {
                 if (searchListView != null) {
-                    progressView.setVisibility(search ? View.VISIBLE : View.INVISIBLE);
-                    searchEmptyView.setVisibility(search ? View.INVISIBLE : View.VISIBLE);
+                    progressView.setVisibility(search ? View.VISIBLE : View.GONE);
+                    searchEmptyView.setVisibility(search ? View.GONE : View.VISIBLE);
                     searchListView.setEmptyView(search ? progressView : searchEmptyView);
                 }
             }
@@ -287,10 +284,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             public boolean onQueryTextChange(String s) {
                 if (s.length() != 0) {
 
-                    if (searchEmptyView != null && searchListView.getEmptyView() == emptyView) {
+                    if (searchEmptyView != null && searchListView.getEmptyView() == searchEmptyView) {
                         searchListView.setEmptyView(searchEmptyView);
-                        emptyView.setVisibility(View.INVISIBLE);
-                        progressView.setVisibility(View.INVISIBLE);
+                        searchEmptyView.setVisibility(View.GONE);
+                        progressView.setVisibility(View.GONE);
                     }
                 }
 
@@ -316,6 +313,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
                 mViewPager.setVisibility(View.GONE);
                 actionBar.removeAllTabs();
+                actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
                 return true;
             }
@@ -328,6 +326,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     dialogsSearchAdapter.notifyDataSetChanged();
                 }
 
+                searchListView.setVisibility(View.GONE);
+                searchEmptyView.setVisibility(View.GONE);
+                searchEmptyView.invalidate();
                 mViewPager.setVisibility(View.VISIBLE);
                 for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
                     actionBar.addTab(
@@ -335,6 +336,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                                     .setText(mSectionsPagerAdapter.getPageTitle(i))
                                     .setTabListener(tabListener));
                 }
+                actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
                 return true;
             }
