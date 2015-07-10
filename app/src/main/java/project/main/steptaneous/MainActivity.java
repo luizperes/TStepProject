@@ -32,6 +32,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.googlecode.mp4parser.authoring.tracks.TextTrackImpl;
+
 import org.telegram.android.LocaleController;
 import org.telegram.android.NotificationCenter;
 import org.telegram.messenger.ApplicationLoader;
@@ -265,6 +267,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             public void searchStateChanged(boolean search) {
                 if (searchListView != null) {
                     progressView.setVisibility(search ? View.VISIBLE : View.GONE);
+                    for (int i = 0; i < ((LinearLayout) searchEmptyView).getChildCount(); i++)
+                        ((LinearLayout) searchEmptyView).getChildAt(i).setVisibility(search ? View.GONE : View.VISIBLE);
                     searchEmptyView.setVisibility(search ? View.GONE : View.VISIBLE);
                     searchListView.setEmptyView(search ? progressView : searchEmptyView);
                 }
@@ -282,14 +286,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
             @Override
             public boolean onQueryTextChange(String s) {
-                if (s.length() != 0) {
-
-                    if (searchEmptyView != null && searchListView.getEmptyView() == searchEmptyView) {
-                        searchListView.setEmptyView(searchEmptyView);
-                        searchEmptyView.setVisibility(View.GONE);
-                        progressView.setVisibility(View.GONE);
-                    }
-                }
+                checkEmptyView(s);
 
                 if (dialogsSearchAdapter != null) {
                     // This statement will stay here to remind us in the future, if we need it.
@@ -326,9 +323,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     dialogsSearchAdapter.notifyDataSetChanged();
                 }
 
-                searchListView.setVisibility(View.GONE);
-                searchEmptyView.setVisibility(View.GONE);
-                searchEmptyView.invalidate();
+                checkEmptyView(searchView.getQuery().toString());
                 mViewPager.setVisibility(View.VISIBLE);
                 for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
                     actionBar.addTab(
@@ -342,6 +337,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
         });
 
+    }
+
+    public void checkEmptyView(String s)
+    {
+        if (s.length() != 0) {
+
+            if (searchEmptyView != null && searchListView.getEmptyView() == searchEmptyView) {
+                searchListView.setEmptyView(searchEmptyView);
+                for (int i = 0; i < ((LinearLayout) searchEmptyView).getChildCount(); i++)
+                    ((LinearLayout) searchEmptyView).getChildAt(i).setVisibility(View.GONE);
+                searchEmptyView.setVisibility(View.GONE);
+                progressView.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
