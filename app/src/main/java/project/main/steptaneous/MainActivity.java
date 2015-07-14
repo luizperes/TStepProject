@@ -27,12 +27,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.googlecode.mp4parser.authoring.tracks.TextTrackImpl;
 
 import org.telegram.android.LocaleController;
 import org.telegram.android.NotificationCenter;
@@ -56,6 +53,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     private ActionBar actionBar;
     private TextView textView;
     private boolean isSearchingOn;
+    private final String KEY_QUERY_TEXT_VALUE = "queryValue";
+    private String savedQuery = null;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             setElementsActivity();
             setNetworkObserver();
             handleIntent(theIntent);
+            handleBundle(savedInstanceState);
+        }
+    }
+
+    private void handleBundle(Bundle savedInstanceState)
+    {
+        if (savedInstanceState != null)
+        {
+            savedQuery = savedInstanceState.getString(KEY_QUERY_TEXT_VALUE);
         }
     }
 
@@ -274,7 +283,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
         });
 
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -317,8 +326,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
 
             @Override
-            public boolean onMenuItemActionCollapse(MenuItem item)
-            {
+            public boolean onMenuItemActionCollapse(MenuItem item) {
                 isSearchingOn = false;
 
                 if (dialogsSearchAdapter != null) {
@@ -339,6 +347,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 return true;
             }
         });
+
+        if (savedQuery != null)
+        {
+            item.expandActionView();
+            searchView.setQuery(savedQuery, true);
+            searchView.clearFocus();
+        }
 
     }
 
@@ -395,6 +410,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 updateCurrentConnectionState();
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (isSearchingOn)
+            outState.putString(KEY_QUERY_TEXT_VALUE, searchView.getQuery().toString());
     }
 
     /**
