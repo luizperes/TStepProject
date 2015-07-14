@@ -7,7 +7,7 @@
         <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools" android:id="@+id/pager"
         android:layout_width="match_parent" android:layout_height="match_parent"
-        tools:context="project.main.steptaneous.MainActivity" android:background="@android:color/holo_blue_bright"/>
+        tools:context="project.main.steptaneous.MainActivity"/>
 
         <ListView
         android:layout_width="match_parent"
@@ -25,23 +25,23 @@
         android:layout_height="match_parent"
         android:id="@+id/search_empty_view"
         android:orientation="vertical"
-        android:gravity="center"
+        android:gravity="top|center"
         android:visibility="gone">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textColor="@color/tel_dark_grey"
                 android:gravity="center"
                 android:textSize="20dp"
                 android:id="@+id/search_empty_text"
-                android:layout_weight="1" android:background="@android:color/holo_blue_bright"/>
+                android:layout_weight="1"/>
 
             <FrameLayout
                 android:layout_height="0dp"
                 android:layout_width="match_parent"
                 android:id="@+id/search_empty_text_frame"
-                android:layout_weight="1"  android:background="@android:color/holo_green_dark"/>
+                android:layout_weight="1"/>
 
         </LinearLayout>
 

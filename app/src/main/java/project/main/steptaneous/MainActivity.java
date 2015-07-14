@@ -55,6 +55,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     private int currentConnectionState;
     private ActionBar actionBar;
     private TextView textView;
+    private boolean isSearchingOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,11 +266,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         dialogsSearchAdapter.setDelegate(new DialogsSearchAdapter.MessagesActivitySearchAdapterDelegate() {
             @Override
             public void searchStateChanged(boolean search) {
-                if (searchListView != null) {
+                if (searchListView != null && isSearchingOn) {
                     progressView.setVisibility(search ? View.VISIBLE : View.GONE);
-                    for (int i = 0; i < ((LinearLayout) searchEmptyView).getChildCount(); i++)
-                        ((LinearLayout) searchEmptyView).getChildAt(i).setVisibility(search ? View.GONE : View.VISIBLE);
-                    searchEmptyView.setVisibility(search ? View.GONE : View.VISIBLE);
+                    searchEmptyView.setVisibility(search ? LinearLayout.GONE : LinearLayout.VISIBLE);
                     searchListView.setEmptyView(search ? progressView : searchEmptyView);
                 }
             }
@@ -288,7 +287,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             public boolean onQueryTextChange(String s) {
                 checkEmptyView(s);
 
-                if (dialogsSearchAdapter != null) {
+                if (dialogsSearchAdapter != null && isSearchingOn) {
                     // This statement will stay here to remind us in the future, if we need it.
                     boolean serverOnly = false;
                     dialogsSearchAdapter.searchDialogs(s, serverOnly);
@@ -303,6 +302,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                isSearchingOn = true;
+
                 if (dialogsSearchAdapter != null) {
                     searchListView.setAdapter(dialogsSearchAdapter);
                     dialogsSearchAdapter.notifyDataSetChanged();
@@ -318,6 +319,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item)
             {
+                isSearchingOn = false;
+
                 if (dialogsSearchAdapter != null) {
                     dialogsSearchAdapter.searchDialogs(null, false);
                     dialogsSearchAdapter.notifyDataSetChanged();
@@ -345,9 +348,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
             if (searchEmptyView != null && searchListView.getEmptyView() == searchEmptyView) {
                 searchListView.setEmptyView(searchEmptyView);
-                for (int i = 0; i < ((LinearLayout) searchEmptyView).getChildCount(); i++)
-                    ((LinearLayout) searchEmptyView).getChildAt(i).setVisibility(View.GONE);
-                searchEmptyView.setVisibility(View.GONE);
+                searchEmptyView.setVisibility(LinearLayout.GONE);
                 progressView.setVisibility(View.GONE);
             }
         }
