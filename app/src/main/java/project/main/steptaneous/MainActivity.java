@@ -359,7 +359,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     public void checkEmptyView(String s)
     {
-        if (s.length() != 0) {
+        if (s.length() != 0 || !isSearchingOn) {
 
             if (searchEmptyView != null && searchListView.getEmptyView() == searchEmptyView) {
                 searchListView.setEmptyView(searchEmptyView);
