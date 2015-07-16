@@ -11,6 +11,8 @@ package project.main.steptaneous;
 
 import java.util.Locale;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
@@ -284,6 +286,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         });
 
         searchView = (SearchView) MenuItemCompat.getActionView(item);
+        View searchPlate = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);;
+        searchPlate.setBackgroundResource(R.drawable.edit_text);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
