@@ -10,6 +10,7 @@ package project.main.steptaneous;
 
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -73,6 +74,7 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
     private int prevPosition;
     private int prevTop;
     private boolean scrollUpdated;
+    private Activity mainActivity;
 
     private MessagesFragmentDelegate delegate;
     public interface MessagesFragmentDelegate {
@@ -114,6 +116,8 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
             ContactsController.getInstance().checkInviteText();
             dialogsLoaded = true;
         }
+
+        mainActivity = getActivity();
     }
 
     @Override
@@ -204,11 +208,13 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
             public void onClick(View v) {
                 Bundle args = new Bundle();
                 args.putBoolean("destroyAfterSelect", true);
-                Intent intent = new Intent(rootView.getContext(), ContainerActivity.class);
+                args.putInt("typeScreen", ContainerActivity.TYPE_SCREEN.TS_CONTACTS.ordinal());
+                Intent intent = new Intent(mainActivity, ContainerActivity.class);
                 intent.putExtras(args);
                 startActivity(intent);
             }
         });
+
 
         if (MessagesController.getInstance().loadingDialogs && MessagesController.getInstance().dialogs.isEmpty()) {
             emptyView.setVisibility(View.INVISIBLE);
@@ -279,7 +285,7 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
         messagesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (onlySelect || getActivity() == null) {
+                if (onlySelect || mainActivity == null) {
                     return false;
                 }
                 TLRPC.TL_dialog dialog;
@@ -296,7 +302,7 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
                 }
                 selectedDialog = dialog.id;
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
                 builder.setTitle(LocaleController.getString("app_name", R.string.app_name));
 
                 int lower_id = (int) selectedDialog;
@@ -307,7 +313,7 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
                         isChat ? LocaleController.getString("DeleteChat", R.string.DeleteChat) : LocaleController.getString("Delete", R.string.Delete)}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, final int which) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
                         builder.setTitle(LocaleController.getString("app_name", R.string.app_name));
                         if (which == 0) {
                             builder.setMessage(LocaleController.getString("AreYouSureClearHistory", R.string.AreYouSureClearHistory));
@@ -349,7 +355,7 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
                 if (i == SCROLL_STATE_TOUCH_SCROLL) {
-                    AndroidUtilities.hideKeyboard(getActivity().getCurrentFocus());
+                    AndroidUtilities.hideKeyboard(mainActivity.getCurrentFocus());
                 }
             }
 
@@ -460,10 +466,10 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
 
     private void didSelectResult(final long dialog_id, boolean useAlert, final boolean param) {
         if (useAlert && selectAlertString != null && selectAlertStringGroup != null) {
-            if (getActivity() == null) {
+            if (mainActivity == null) {
                 return;
             }
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
             builder.setTitle(LocaleController.getString("app_name", R.string.app_name));
             int lower_part = (int)dialog_id;
             int high_id = (int)(dialog_id >> 32);
