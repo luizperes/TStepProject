@@ -11,8 +11,6 @@ package project.main.steptaneous;
 
 import java.util.Locale;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.view.MenuItemCompat;

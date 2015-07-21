@@ -12,6 +12,7 @@ import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
@@ -144,7 +145,7 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.messages_list, container, false);
+        final View rootView = inflater.inflate(R.layout.messages_list, container, false);
 
         dialogsAdapter = new DialogsAdapter(inflater.getContext(), serverOnly);
         if (AndroidUtilities.isTablet() && openedDialogId != 0) {
@@ -203,8 +204,9 @@ public class MessagesFragment extends BaseFragmentStep implements NotificationCe
             public void onClick(View v) {
                 Bundle args = new Bundle();
                 args.putBoolean("destroyAfterSelect", true);
-                // TODO Study the code below, Luiz :)
-                //presentFragment(new ContactsActivity(args));
+                Intent intent = new Intent(rootView.getContext(), ContainerActivity.class);
+                intent.putExtras(args);
+                startActivity(intent);
             }
         });
 
