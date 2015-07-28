@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import project.main.steptaneous.base.BaseFragmentStep;
 
+@SuppressLint("ValidFragment")
 public class ContactsFragment extends BaseFragmentStep implements NotificationCenter.NotificationCenterDelegate
 {
     private boolean onlyUsers;
@@ -41,7 +42,6 @@ public class ContactsFragment extends BaseFragmentStep implements NotificationCe
         void didSelectContact(TLRPC.User user, String param);
     }
 
-    @SuppressLint("ValidFragment")
     public ContactsFragment(Bundle args)
     {
         super(args);

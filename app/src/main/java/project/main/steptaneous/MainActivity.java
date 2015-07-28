@@ -54,8 +54,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     private TextView textView;
     private boolean isSearchingOn;
     private final String KEY_QUERY_TEXT_VALUE = "queryValue";
+    private final String KEY_TAB_POS = "tabPosValue";
     private String savedQuery = null;
     private SearchView searchView;
+    private int tabPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         if (savedInstanceState != null)
         {
             savedQuery = savedInstanceState.getString(KEY_QUERY_TEXT_VALUE);
+            tabPosition = savedInstanceState.getInt(KEY_TAB_POS);
         }
     }
 
@@ -171,13 +174,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     // TODO Luiz, pay attention to that in the future.
                     //ChatActivity fragment = new ChatActivity(args);
                 } else if (showDialogsList) {
-                    final ActionBar actionBar = getSupportActionBar();
-                    actionBar.setSelectedNavigationItem(mSectionsPagerAdapter.getPositionElements(MessagesFragment.class));
+                    setTabByPosition(mSectionsPagerAdapter.getPositionElements(MessagesFragment.class));
                 }
 
                 intent.setAction(null);
             }
         }
+    }
+
+    private void setTabByPosition(int pos)
+    {
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setSelectedNavigationItem(pos);
     }
 
     @Override
@@ -279,6 +287,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     progressView.setVisibility(search ? View.VISIBLE : View.GONE);
                     searchEmptyView.setVisibility(search ? LinearLayout.GONE : LinearLayout.VISIBLE);
                     searchListView.setEmptyView(search ? progressView : searchEmptyView);
+                    FileLog.d("tstepss", " ======Search======= LUIZ ==================" + Boolean.toString(searchEmptyView.getVisibility() == View.VISIBLE) + " " + Boolean.toString(progressView.getVisibility() == View.VISIBLE));
+
                 }
             }
         });
@@ -324,6 +334,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 actionBar.removeAllTabs();
                 actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
+                FileLog.d("tstepss", " =========Expand==== LUIZ ==================" + Boolean.toString(searchEmptyView.getVisibility() == View.VISIBLE) + " " + Boolean.toString(progressView.getVisibility() == View.VISIBLE));
+
                 return true;
             }
 
@@ -345,6 +357,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                                     .setTabListener(tabListener));
                 }
                 actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                setTabByPosition(tabPosition);
 
                 return true;
             }
@@ -354,7 +367,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         {
             item.expandActionView();
             searchView.setQuery(savedQuery, true);
-            searchView.clearFocus();
+            dialogsSearchAdapter.notifyDataSetChanged();
+            searchView.bringToFront();
         }
 
     }
@@ -369,6 +383,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 progressView.setVisibility(View.GONE);
             }
         }
+
+        FileLog.d("tstepss", " ======= checkEmptView LUIZ ==================" + Boolean.toString(searchEmptyView.getVisibility() == View.VISIBLE) + " " + Boolean.toString(progressView.getVisibility() == View.VISIBLE));
     }
 
     @Override
@@ -391,6 +407,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
+        tabPosition = tab.getPosition();
     }
 
     @Override
@@ -417,8 +434,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (isSearchingOn)
+        if (isSearchingOn) {
             outState.putString(KEY_QUERY_TEXT_VALUE, searchView.getQuery().toString());
+            outState.putInt(KEY_TAB_POS, tabPosition);
+        }
     }
 
     /**
